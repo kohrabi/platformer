@@ -11,8 +11,34 @@ size = Vector2(4, 4)
 _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r66lb"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ebhuq"]
 animation = &"firework"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_grlhh"]
+animation = &"firework_explode"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_grlhh"]
+advance_mode = 2
+advance_expression = "fireworkType == FireworkType.Normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j0cl5"]
+advance_mode = 2
+advance_expression = "state != PlayerState.Firework"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qpvj0"]
+advance_mode = 2
+advance_expression = "fireworkType == FireworkType.Explode"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sq3nx"]
+advance_mode = 2
+advance_expression = "state != PlayerState.Firework"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qpvj0"]
+states/firework/node = SubResource("AnimationNodeAnimation_ebhuq")
+states/firework/position = Vector2(508, 91)
+states/firework_explode/node = SubResource("AnimationNodeAnimation_grlhh")
+states/firework_explode/position = Vector2(515, 181)
+transitions = ["Start", "firework", SubResource("AnimationNodeStateMachineTransition_grlhh"), "firework", "End", SubResource("AnimationNodeStateMachineTransition_j0cl5"), "Start", "firework_explode", SubResource("AnimationNodeStateMachineTransition_qpvj0"), "firework_explode", "End", SubResource("AnimationNodeStateMachineTransition_sq3nx")]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4dohe"]
 animation = &"idle"
@@ -31,30 +57,30 @@ advance_expression = "abs(velocity.x) > 0"
 advance_mode = 2
 advance_expression = "abs(velocity.x) <= 0"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ht1c8"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2tsmg"]
 advance_mode = 2
 advance_expression = "state == PlayerState.Firework"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g2jcq"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ohfey"]
+advance_mode = 2
+advance_expression = "state != PlayerState.Firework"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ss567"]
 advance_mode = 2
 advance_expression = "state == PlayerState.Firework"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u51tk"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o5qwm"]
 advance_mode = 2
-advance_expression = "state == PlayerState.Normal"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kbsxf"]
-advance_mode = 2
-advance_expression = "state == PlayerState.Normal"
+advance_expression = "state != PlayerState.Firework"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4dohe"]
-states/firework/node = SubResource("AnimationNodeAnimation_r66lb")
-states/firework/position = Vector2(643, 7)
+states/firework/node = SubResource("AnimationNodeStateMachine_qpvj0")
+states/firework/position = Vector2(637, -2)
 states/idle/node = SubResource("AnimationNodeAnimation_4dohe")
 states/idle/position = Vector2(476, 112)
 states/run/node = SubResource("AnimationNodeAnimation_1txc5")
 states/run/position = Vector2(685, 142)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_4dohe"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r66lb"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_1txc5"), "idle", "firework", SubResource("AnimationNodeStateMachineTransition_ht1c8"), "run", "firework", SubResource("AnimationNodeStateMachineTransition_g2jcq"), "firework", "idle", SubResource("AnimationNodeStateMachineTransition_u51tk"), "firework", "run", SubResource("AnimationNodeStateMachineTransition_kbsxf")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_4dohe"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r66lb"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_1txc5"), "idle", "firework", SubResource("AnimationNodeStateMachineTransition_2tsmg"), "firework", "run", SubResource("AnimationNodeStateMachineTransition_ohfey"), "run", "firework", SubResource("AnimationNodeStateMachineTransition_ss567"), "firework", "idle", SubResource("AnimationNodeStateMachineTransition_o5qwm")]
 graph_offset = Vector2(81, -49)
 
 [sub_resource type="Animation" id="Animation_4dohe"]
@@ -88,6 +114,24 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_ebhuq"]
+resource_name = "firework_explode"
+length = 0.10001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteScaler/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_r66lb"]
@@ -129,6 +173,7 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_4dohe"),
 &"firework": SubResource("Animation_ht1c8"),
+&"firework_explode": SubResource("Animation_ebhuq"),
 &"idle": SubResource("Animation_r66lb"),
 &"run": SubResource("Animation_1txc5")
 }
@@ -145,8 +190,11 @@ MAX_JUMP_HEIGHT = -200.0
 GRAVITY = 300.0
 MAX_FALL_SPEED = 200.0
 FIREWORK_SPEED = 500.0
-FIREWORK_TIME = 7.5
 FIREWORK_MAX_SPEED = 70.0
+FIREWORK_EXPLODE_SPEED = 200.0
+FIREWORK_EXPLODE_TIME = 1.0
+FIREWORK_EXPLODE_DECELERATION = 200.0
+FIREWORK_EXPLODE_GRAVITY = 200.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395993521]
 position = Vector2(0, 2)
@@ -156,7 +204,7 @@ shape = SubResource("RectangleShape2D_g2h75")
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteScaler" unique_id=1978635507]
 texture = ExtResource("2_4dohe")
-hframes = 4
+hframes = 5
 
 [node name="FireworkParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1683100698]
 position = Vector2(0, 5)

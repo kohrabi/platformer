@@ -1,12 +1,16 @@
 extends CharacterBody2D
 class_name Player
 
-var fireworkParticlePrefab : PackedScene = preload("res://prefabs/particles/firework.tscn");
-
 enum PlayerState {
 	Normal,
 	Firework,
+	FireworkExplode,
 	Die
+}
+
+enum FireworkType {
+	Normal,
+	Explode
 }
 
 @export_group("Normal")
@@ -20,9 +24,13 @@ enum PlayerState {
 @export var MAX_FALL_SPEED : float = 400.0
 @export_group("Speed")
 @export var FIREWORK_SPEED : float = 100.0;
-@export var FIREWORK_TIME : float = 1.0;
 @export var FIREWORK_MAX_SPEED : float = 80;
 @export var FIREWORK_IGNORE_INPUT_TIME : float = 0.06;
+@export_subgroup("Firework Explode")
+@export var FIREWORK_EXPLODE_SPEED : float = 100.0;
+@export var FIREWORK_EXPLODE_TIME : float = 0.2;
+@export var FIREWORK_EXPLODE_DECELERATION : float = 100;
+@export var FIREWORK_EXPLODE_GRAVITY : float = 100;
 
 
 var coyote_time : float = 0.1
@@ -38,6 +46,9 @@ var currentFirework : Firework;
 var fireworkTimer : float = 0.0;
 var fireworkIgnoreInputTimer : float = 0.0;
 var fireworkDefaultDir : Vector2 = Vector2.ZERO;
+var fireworkExplodeTimer : float = 0.0;
+var fireworkForcedVelocity : Vector2 = Vector2.ZERO;
+var fireworkType : FireworkType = FireworkType.Normal;
 
 var state : PlayerState = PlayerState.Normal;
 @onready var fireworkParticle: CPUParticles2D = $SpriteScaler/Sprite2D/FireworkParticle
@@ -109,6 +120,16 @@ func _physics_process(delta: float) -> void:
 			if fireworkTimer <= 0:
 				change_state(PlayerState.Normal);
 			fireworkTimer -= delta;
+		PlayerState.FireworkExplode:
+			onFloor = is_on_floor();
+			if not onFloor:
+				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
+			velocity.x = \
+				move_toward(velocity.x, SPEED * inputAxis, FIREWORK_EXPLODE_DECELERATION * delta);
+			move_and_slide();
+			fireworkExplodeTimer -= delta;
+			if fireworkExplodeTimer < 0.0:
+				change_state(PlayerState.Normal)
 
 func change_state(nextState : PlayerState) -> void:
 	if state == nextState:
@@ -117,28 +138,38 @@ func change_state(nextState : PlayerState) -> void:
 	match state:
 		PlayerState.Normal:
 			velocity = Vector2.ZERO;
-			pass;
 		PlayerState.Firework:
-			if currentFirework:
-				currentFirework.detach();
-			Global.currentCamera.shake(2, 0.2);
-			Global.stop_time(0.1);
-			spriteScaler.global_rotation = 0
-			fireworkParticle.emitting = false;
-			var obj : Node2D = fireworkParticlePrefab.instantiate();
-			get_tree().root.add_child(obj);
-			obj.global_position = global_position;
-			#velocity = Vector2.ZERO;
+			if nextState != PlayerState.FireworkExplode:
+				if currentFirework:
+					currentFirework.detach(global_position);
+				Global.currentCamera.shake(2, 0.2);
+				Global.stop_time(0.1);
+				spriteScaler.global_rotation = 0;
+				fireworkParticle.emitting = false;
+				match currentFirework.type:
+					Firework.Type.Explode:
+						change_state(PlayerState.FireworkExplode);
+						currentFirework = null;
+						return;
+				currentFirework = null;
 	state = nextState;
 	match state:
 		PlayerState.Firework:
-			fireworkTimer = FIREWORK_TIME;
+			match currentFirework.type:
+				Firework.Type.Normal:
+					fireworkType = FireworkType.Normal;
+				Firework.Type.Explode:
+					fireworkType = FireworkType.Explode;
+			fireworkTimer = currentFirework.time;
 			fireworkDefaultDir = Vector2.UP
 			aimDir = fireworkDefaultDir;
 			fireworkIgnoreInputTimer = FIREWORK_IGNORE_INPUT_TIME;
 			fireworkParticle.emitting = true;
 			Global.stop_time(0.1);
-			pass;
+		PlayerState.FireworkExplode:
+			fireworkForcedVelocity = (aimDir - Vector2(0, 0.5)).normalized() * FIREWORK_EXPLODE_SPEED; 
+			fireworkExplodeTimer = FIREWORK_EXPLODE_TIME;
+			velocity = fireworkForcedVelocity;
 
 func handle_jump(delta : float) -> void:
 	if onFloor:

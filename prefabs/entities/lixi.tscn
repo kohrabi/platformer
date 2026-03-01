@@ -20,7 +20,7 @@ shape = SubResource("RectangleShape2D_vcjkt")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=848297048]
 texture = ExtResource("2_0e4ol")
 hframes = 16
-vframes = 5
+vframes = 8
 frame = 4
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

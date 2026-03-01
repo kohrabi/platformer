@@ -1,0 +1,60 @@
+[gd_scene format=4 uid="uid://cog2smu7xm8wm"]
+
+[ext_resource type="TileSet" uid="uid://tmo4d7f3pqna" path="res://resources/background.tres" id="1_djf6h"]
+[ext_resource type="TileSet" uid="uid://du1tgrn3mqute" path="res://resources/tileset.tres" id="2_rdkg4"]
+[ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_v3b64"]
+[ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="4_72klc"]
+[ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="5_co8fc"]
+[ext_resource type="PackedScene" uid="uid://0ossrga7dhan" path="res://prefabs/exit.tscn" id="6_2arsn"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="7_v1l7f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_utlmm"]
+size = Vector2(60, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
+size = Vector2(8, 32)
+
+[node name="Level" type="Node2D" unique_id=554187013]
+
+[node name="Background" type="TileMapLayer" parent="." unique_id=2037672833]
+tile_set = ExtResource("1_djf6h")
+rendering_quadrant_size = 8
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=184068243]
+tile_map_data = PackedByteArray("AAAPAAsAAAANAAQAAAAPAAoAAAAMAAEAAAAPAAkAAAAMAAEAAAAPAAgAAAAMAAEAAAAPAAcAAAAMAAEAAAAPAAYAAAANAAMAAAAPAAUAAAANAAEAAAAPAAQAAAANAAEAAAAOAAsAAAANAAAAAAANAAsAAAANAAAAAAAAAAwAAAANAAEAAAAAAAsAAAAMAAQAAAAAAAoAAAAOAAEAAAAAAAkAAAAOAAEAAAAAAAgAAAAOAAEAAAAAAAcAAAAOAAEAAAAAAAYAAAAMAAMAAAAAAAUAAAANAAEAAAACAAYAAAANAAIAAAACAAUAAAANAAEAAAACAAQAAAANAAEAAAABAAYAAAANAAIAAAABAAUAAAANAAEAAAABAAQAAAANAAEAAAAAAAQAAAANAAEAAAAPAAwAAAANAAEAAAAOAAwAAAANAAEAAAANAAwAAAANAAEAAAADAAwAAAAMAAQAAAADAAsAAAAOAAAAAAACAAwAAAANAAEAAAACAAsAAAANAAAAAAABAAwAAAANAAEAAAABAAsAAAANAAAAAAAOAAYAAAANAAIAAAAOAAUAAAANAAEAAAAOAAQAAAANAAEAAAANAAYAAAANAAIAAAANAAUAAAANAAEAAAANAAQAAAANAAEAAAAMAAwAAAANAAQAAAAQAAwAAAANAAEAAAAQAAsAAAANAAEAAAAQAAoAAAANAAEAAAAQAAkAAAANAAEAAAAQAAgAAAANAAEAAAAQAAcAAAANAAEAAAAQAAYAAAANAAEAAAAQAAUAAAANAAEAAAAQAAQAAAANAAEAAAAMAAYAAAANAAIAAAAMAAUAAAANAAEAAAAMAAQAAAANAAEAAAADAAYAAAANAAIAAAADAAUAAAANAAEAAAADAAQAAAANAAEAAAALAAYAAAANAAIAAAALAAUAAAANAAEAAAALAAQAAAANAAEAAAAKAAYAAAANAAIAAAAKAAUAAAANAAEAAAAKAAQAAAANAAEAAAAJAAYAAAANAAIAAAAJAAUAAAANAAEAAAAJAAQAAAANAAEAAAAIAAYAAAANAAIAAAAIAAUAAAANAAEAAAAIAAQAAAANAAEAAAAHAAYAAAANAAIAAAAHAAUAAAANAAEAAAAHAAQAAAANAAEAAAAGAAYAAAANAAIAAAAGAAUAAAANAAEAAAAGAAQAAAANAAEAAAAFAAYAAAANAAIAAAAFAAUAAAANAAEAAAAFAAQAAAANAAEAAAAEAAYAAAANAAIAAAAEAAUAAAANAAEAAAAEAAQAAAANAAEAAAALAAwAAAANAAAAAAAKAAwAAAANAAAAAAAJAAwAAAANAAAAAAAIAAwAAAANAAAAAAAHAAwAAAANAAAAAAAGAAwAAAANAAAAAAAFAAwAAAANAAAAAAAEAAwAAAANAAAAAAAMAAsAAAAMAAAAAAA=")
+tile_set = ExtResource("2_rdkg4")
+rendering_quadrant_size = 8
+
+[node name="Entities" type="TileMapLayer" parent="." unique_id=765668964]
+tile_map_data = PackedByteArray("AAACAAoAAAAAAAAAAgAFAAgAAAAAAAAABAA=")
+tile_set = ExtResource("3_v3b64")
+rendering_quadrant_size = 8
+
+[node name="Dog" parent="Entities" unique_id=2083497293 node_paths=PackedStringArray("followRegion") instance=ExtResource("4_72klc")]
+position = Vector2(36, 92)
+followRegion = NodePath("FollowRegion")
+
+[node name="FollowRegion" type="Area2D" parent="Entities/Dog" unique_id=710852944]
+top_level = true
+position = Vector2(36, 92)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Dog/FollowRegion" unique_id=26211360]
+position = Vector2(30, -16)
+shape = SubResource("RectangleShape2D_utlmm")
+
+[node name="Reset" parent="." unique_id=1883135819 instance=ExtResource("5_co8fc")]
+position = Vector2(70, 138)
+
+[node name="Exit" parent="." unique_id=1663383131 instance=ExtResource("6_2arsn")]
+position = Vector2(124, 112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1061293346]
+position = Vector2(-8, -40)
+shape = SubResource("RectangleShape2D_dwgg1")
+
+[node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("7_v1l7f")]
+
+[connection signal="body_entered" from="Entities/@Area2D@307588" to="Entities/@Area2D@307588" method="_on_body_entered"]
