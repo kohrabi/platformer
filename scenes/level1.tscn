@@ -1,0 +1,35 @@
+[gd_scene format=4 uid="uid://ctresgb781npy"]
+
+[ext_resource type="TileSet" uid="uid://du1tgrn3mqute" path="res://resources/tileset.tres" id="1_6sh32"]
+[ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="2_ru4tf"]
+[ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="4_dwgg1"]
+[ext_resource type="PackedScene" uid="uid://x4xx37jr2tbf" path="res://scenes/level2.tscn" id="5_6sh32"]
+[ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_ru4tf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
+size = Vector2(8, 32)
+
+[node name="Level" type="Node2D" unique_id=554187013]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=184068243]
+tile_map_data = PackedByteArray("AAABAA4AAAANAAAAAAAAAA4AAAANAAAAAAAOAA4AAAANAAQAAAAIAA4AAAANAAAAAAAHAA4AAAANAAAAAAD//wkAAAAOAAEAAAD//woAAAAOAAEAAAD//wsAAAAOAAEAAAD//wwAAAAOAAEAAAD//w0AAAAOAAEAAAD//w4AAAAMAAQAAAACAA4AAAANAAAAAAADAA4AAAANAAAAAAAEAA4AAAANAAAAAAAFAA4AAAANAAAAAAAGAA4AAAANAAAAAAAJAA4AAAANAAAAAAAKAA4AAAANAAAAAAALAA4AAAANAAAAAAAMAA4AAAANAAAAAAANAA4AAAANAAAAAAD//wAAAAAMAAMAAAD//wEAAAAOAAEAAAD//wIAAAAOAAEAAAD//wMAAAAOAAEAAAD//wQAAAAOAAEAAAD//wUAAAAOAAEAAAD//wYAAAAOAAEAAAD//wcAAAAOAAEAAAD//wgAAAAOAAEAAAAQAAAAAAANAAMAAAAQAAEAAAAMAAEAAAAQAAIAAAAMAAEAAAAQAAMAAAAMAAEAAAAQAAQAAAANAAQAAAAQAAUAAAANAAEAAAAOAAgAAAAMAAEAAAAOAAkAAAAMAAEAAAAOAAoAAAAMAAEAAAAOAAsAAAAMAAEAAAAOAAwAAAAMAAEAAAAOAA0AAAAMAAEAAAAOAAQAAAAMAAAAAAAOAAUAAAAMAAEAAAAOAAYAAAAMAAEAAAAOAAcAAAAMAAEAAAAPAAQAAAANAAAAAAAPAAUAAAANAAEAAAAAAAAAAAANAAIAAAABAAAAAAANAAIAAAACAAAAAAANAAIAAAADAAAAAAANAAIAAAAEAAAAAAANAAIAAAAFAAAAAAANAAIAAAAGAAAAAAANAAIAAAAHAAAAAAANAAIAAAAIAAAAAAANAAIAAAAJAAAAAAANAAIAAAAKAAAAAAANAAIAAAALAAAAAAANAAIAAAAMAAAAAAANAAIAAAANAAAAAAANAAIAAAAOAAAAAAANAAIAAAAPAAAAAAANAAIAAAD+/w4AAAANAAEAAAD+/w0AAAANAAEAAAD+/wwAAAANAAEAAAD+/wsAAAANAAEAAAD+/woAAAANAAEAAAD+/wkAAAANAAEAAAD+/wgAAAANAAEAAAD+/wcAAAANAAEAAAD+/wYAAAANAAEAAAD+/wUAAAANAAEAAAD+/wQAAAANAAEAAAD+/wMAAAANAAEAAAD+/wIAAAANAAEAAAD+/wEAAAANAAEAAAD+/wAAAAANAAEAAAA=")
+tile_set = ExtResource("1_6sh32")
+rendering_quadrant_size = 8
+
+[node name="Entities" type="TileMapLayer" parent="." unique_id=1504155999]
+tile_map_data = PackedByteArray("AAAHAA0AAAAAAAAAAQABAA0AAAAAAAAAAgA=")
+tile_set = ExtResource("2_ru4tf")
+rendering_quadrant_size = 8
+
+[node name="Reset" parent="." unique_id=1883135819 instance=ExtResource("4_dwgg1")]
+position = Vector2(70, 138)
+
+[node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_ru4tf")]
+position = Vector2(120, 0)
+nextScene = ExtResource("5_6sh32")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
+position = Vector2(4, 16)
+shape = SubResource("RectangleShape2D_dwgg1")
+
+[connection signal="body_entered" from="Entities/@Area2D@152780" to="Entities/@Area2D@152780" method="_on_body_entered"]

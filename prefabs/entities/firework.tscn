@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cmfpmwl1aakqf"]
+
+[ext_resource type="Script" uid="uid://bcfq2o33km34e" path="res://scripts/firework.gd" id="1_07a3f"]
+[ext_resource type="Texture2D" uid="uid://bfyng70sk4dcl" path="res://sprites/platformer.png" id="1_kwrub"]
+[ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="2_qko0y"]
+
+[sub_resource type="Curve" id="Curve_efe5l"]
+_data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
+size = Vector2(8, 8)
+
+[node name="Firework" type="Area2D" unique_id=2103725913]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_07a3f")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1315022956]
+visible = false
+position = Vector2(0, 4)
+amount = 30
+texture = ExtResource("2_qko0y")
+randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector2(0, 1)
+gravity = Vector2(0, 50)
+initial_velocity_max = 6.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+radial_accel_min = -2.5
+radial_accel_max = 2.5
+scale_amount_curve = SubResource("Curve_efe5l")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2109018983]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_wwpf4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1954554996]
+texture = ExtResource("1_kwrub")
+hframes = 16
+vframes = 6
+frame = 2
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d4lyy2ac6nejk"]
+
+[ext_resource type="Script" uid="uid://cwpwwpai7yhmu" path="res://scripts/change_level.gd" id="1_yhoiw"]
+
+[node name="ChangeLevel" type="Area2D" unique_id=1663383131]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_yhoiw")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

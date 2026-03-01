@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b00lveqpp16vl"]
+
+[ext_resource type="Script" uid="uid://d0frv67mabhyx" path="res://scripts/reset.gd" id="1_gxng2"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_m7ahb"]
+
+[node name="Reset" type="Area2D" unique_id=1883135819]
+collision_mask = 2
+monitorable = false
+script = ExtResource("1_gxng2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=238137584]
+shape = SubResource("WorldBoundaryShape2D_m7ahb")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

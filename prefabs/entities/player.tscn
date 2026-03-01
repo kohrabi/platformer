@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://bjqtth54ldfjt"]
+
+[ext_resource type="Script" uid="uid://cmox10psxitme" path="res://scripts/player.gd" id="1_4dohe"]
+[ext_resource type="Texture2D" uid="uid://dh1yanm3xa2jf" path="res://sprites/platformer_player.png" id="2_4dohe"]
+[ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="3_r66lb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g2h75"]
+size = Vector2(2, 3)
+
+[sub_resource type="Curve" id="Curve_1txc5"]
+_data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r66lb"]
+animation = &"firework"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4dohe"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1txc5"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4dohe"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r66lb"]
+advance_mode = 2
+advance_expression = "abs(velocity.x) > 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1txc5"]
+advance_mode = 2
+advance_expression = "abs(velocity.x) <= 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ht1c8"]
+advance_mode = 2
+advance_expression = "state == PlayerState.Firework"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g2jcq"]
+advance_mode = 2
+advance_expression = "state == PlayerState.Firework"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u51tk"]
+advance_mode = 2
+advance_expression = "state == PlayerState.Normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kbsxf"]
+advance_mode = 2
+advance_expression = "state == PlayerState.Normal"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4dohe"]
+states/firework/node = SubResource("AnimationNodeAnimation_r66lb")
+states/firework/position = Vector2(643, 7)
+states/idle/node = SubResource("AnimationNodeAnimation_4dohe")
+states/idle/position = Vector2(476, 112)
+states/run/node = SubResource("AnimationNodeAnimation_1txc5")
+states/run/position = Vector2(685, 142)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_4dohe"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_r66lb"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_1txc5"), "idle", "firework", SubResource("AnimationNodeStateMachineTransition_ht1c8"), "run", "firework", SubResource("AnimationNodeStateMachineTransition_g2jcq"), "firework", "idle", SubResource("AnimationNodeStateMachineTransition_u51tk"), "firework", "run", SubResource("AnimationNodeStateMachineTransition_kbsxf")]
+graph_offset = Vector2(81, -49)
+
+[sub_resource type="Animation" id="Animation_4dohe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteScaler/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ht1c8"]
+resource_name = "firework"
+length = 0.10001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteScaler/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+
+[sub_resource type="Animation" id="Animation_r66lb"]
+resource_name = "idle"
+length = 0.06667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteScaler/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_1txc5"]
+resource_name = "run"
+length = 0.30001
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteScaler/Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ht1c8"]
+_data = {
+&"RESET": SubResource("Animation_4dohe"),
+&"firework": SubResource("Animation_ht1c8"),
+&"idle": SubResource("Animation_r66lb"),
+&"run": SubResource("Animation_1txc5")
+}
+
+[node name="Player" type="CharacterBody2D" unique_id=895377601]
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_4dohe")
+SPEED = 60.0
+ACCELERATION = 500.0
+DECELERATION = 600.0
+JUMP_VELOCITY = -110.0
+MAX_JUMP_HEIGHT = -200.0
+GRAVITY = 300.0
+MAX_FALL_SPEED = 200.0
+FIREWORK_SPEED = 500.0
+FIREWORK_TIME = 7.5
+FIREWORK_MAX_SPEED = 70.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395993521]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_g2h75")
+
+[node name="SpriteScaler" type="Node2D" parent="." unique_id=1338256241]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteScaler" unique_id=1978635507]
+texture = ExtResource("2_4dohe")
+hframes = 4
+
+[node name="FireworkParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1683100698]
+position = Vector2(0, 5)
+emitting = false
+amount = 40
+texture = ExtResource("3_r66lb")
+lifetime = 0.5
+emission_shape = 1
+emission_sphere_radius = 4.0
+direction = Vector2(0, 1)
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+linear_accel_min = -10.0
+linear_accel_max = 10.0
+scale_amount_curve = SubResource("Curve_1txc5")
+
+[node name="FireworkParticle2" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=378620078]
+visible = false
+position = Vector2(0, 5)
+emitting = false
+amount = 50
+texture = ExtResource("3_r66lb")
+lifetime = 0.5
+emission_shape = 1
+emission_sphere_radius = 4.0
+direction = Vector2(0, 1)
+gravity = Vector2(0, 0)
+initial_velocity_min = 60.0
+initial_velocity_max = 60.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+radial_accel_min = -2.5
+radial_accel_max = 2.5
+tangential_accel_min = -16.0
+scale_amount_curve = SubResource("Curve_1txc5")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=155250346]
+tree_root = SubResource("AnimationNodeStateMachine_4dohe")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationTree" unique_id=1538479462]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_ht1c8")
