@@ -5,7 +5,8 @@ var fireworkParticlePrefab : PackedScene = preload("res://prefabs/particles/fire
 
 enum PlayerState {
 	Normal,
-	Firework
+	Firework,
+	Die
 }
 
 @export_group("Normal")
@@ -44,9 +45,10 @@ var state : PlayerState = PlayerState.Normal;
 @onready var spriteScaler : Node2D = $SpriteScaler;
 
 func _ready() -> void:
+	Global.currentPlayer = self;
 	prevOnFloor = is_on_floor();
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	inputAxis = Input.get_axis("move_left", "move_right");
 	var dir : Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down");
 	if (dir != Vector2.ZERO):
@@ -119,6 +121,8 @@ func change_state(nextState : PlayerState) -> void:
 		PlayerState.Firework:
 			if currentFirework:
 				currentFirework.detach();
+			Global.currentCamera.shake(2, 0.2);
+			Global.stop_time(0.1);
 			spriteScaler.global_rotation = 0
 			fireworkParticle.emitting = false;
 			var obj : Node2D = fireworkParticlePrefab.instantiate();
@@ -133,7 +137,7 @@ func change_state(nextState : PlayerState) -> void:
 			aimDir = fireworkDefaultDir;
 			fireworkIgnoreInputTimer = FIREWORK_IGNORE_INPUT_TIME;
 			fireworkParticle.emitting = true;
-			#velocity = aimDir * FIREWORK_MAX_SPEED;
+			Global.stop_time(0.1);
 			pass;
 
 func handle_jump(delta : float) -> void:

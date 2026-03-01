@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="4_3qbet"]
 [ext_resource type="PackedScene" uid="uid://0ossrga7dhan" path="res://prefabs/exit.tscn" id="5_6p2dx"]
 [ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="6_utlmm"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="7_jaibq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_utlmm"]
 size = Vector2(76, 40)
@@ -78,5 +79,7 @@ position = Vector2(124, 112)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1061293346]
 shape = SubResource("RectangleShape2D_dwgg1")
+
+[node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("7_jaibq")]
 
 [connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]

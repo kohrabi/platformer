@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="4_dwgg1"]
 [ext_resource type="PackedScene" uid="uid://x4xx37jr2tbf" path="res://scenes/level2.tscn" id="5_6sh32"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_ru4tf"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="6_6sh32"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
 size = Vector2(8, 32)
@@ -32,4 +33,6 @@ nextScene = ExtResource("5_6sh32")
 position = Vector2(4, 16)
 shape = SubResource("RectangleShape2D_dwgg1")
 
-[connection signal="body_entered" from="Entities/@Area2D@152780" to="Entities/@Area2D@152780" method="_on_body_entered"]
+[node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("6_6sh32")]
+
+[connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]

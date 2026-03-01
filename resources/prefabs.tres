@@ -2,11 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://cmfpmwl1aakqf" path="res://prefabs/entities/firework.tscn" id="1_amiv0"]
 [ext_resource type="PackedScene" uid="uid://bjqtth54ldfjt" path="res://prefabs/entities/player.tscn" id="2_who4y"]
+[ext_resource type="PackedScene" uid="uid://e5ecbh3vg63c" path="res://prefabs/entities/lixi.tscn" id="3_who4y"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ws2bs"]
 resource_name = "prefabs"
 scenes/1/scene = ExtResource("1_amiv0")
 scenes/2/scene = ExtResource("2_who4y")
+scenes/3/scene = ExtResource("3_who4y")
 
 [resource]
 tile_size = Vector2i(8, 8)

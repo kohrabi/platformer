@@ -48,5 +48,5 @@ func _follow_region_exited(body: Node2D) -> void:
 	pass;
 
 func _on_body_entered(_body: Node2D) -> void:
-	Transition.reload_current_scene.call_deferred();
+	Global.die();
 	pass # Replace with function body.

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dn6v307vhush7"]
+
+[ext_resource type="FontFile" uid="uid://dgs2lcn7abwkf" path="res://fonts/pico-8.ttf" id="1_anmfj"]
+[ext_resource type="Script" uid="uid://owkftn8an8u" path="res://scripts/score_particle.gd" id="2_1wvjg"]
+
+[node name="ScoreParticle" type="Label" unique_id=1694989315]
+offset_right = 16.0
+offset_bottom = 6.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("1_anmfj")
+theme_override_font_sizes/font_size = 5
+text = "1000"
+script = ExtResource("2_1wvjg")
+
+[node name="Label" type="Label" parent="." unique_id=480051712]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 17.0
+offset_bottom = 7.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(1, 0.6392157, 0, 1)
+theme_override_fonts/font = ExtResource("1_anmfj")
+theme_override_font_sizes/font_size = 5
+text = "1000"

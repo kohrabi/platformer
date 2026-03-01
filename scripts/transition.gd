@@ -14,6 +14,7 @@ func change_scene_to_packed(scene : PackedScene) -> void:
 	await get_tree().create_timer(0.5).timeout;
 	get_tree().change_scene_to_packed(scene);
 	transitioning = false;
+	transition_out();
 
 func reload_current_scene() -> void:
 	if transitioning:
@@ -22,13 +23,13 @@ func reload_current_scene() -> void:
 	transitioning = true;
 	await get_tree().create_timer(0.5).timeout;
 	get_tree().reload_current_scene();
+	await get_tree().create_timer(0.1).timeout;
+	transition_out();
 	transitioning = false;
 	
 
 func transition_in() -> void:
 	animator.set("parameters/conditions/transitionIn", true);
-	pass;
 	
 func transition_out() -> void:
 	animator.set("parameters/conditions/transitionOut", true);
-	pass;
