@@ -18,6 +18,8 @@ func _on_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
 
 func attach(player : Player) -> void:
+	if (player.state != Player.PlayerState.Normal):
+		return;
 	attached = true;
 	visible = false;
 	player.enter_firework(self);

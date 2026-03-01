@@ -19,7 +19,7 @@ monitorable = false
 script = ExtResource("1_rjpcp")
 particlePrefab = ExtResource("2_rab8t")
 type = 1
-time = 4.0
+time = 3.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1315022956]
 visible = false

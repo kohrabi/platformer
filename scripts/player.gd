@@ -5,7 +5,8 @@ enum PlayerState {
 	Normal,
 	Firework,
 	FireworkExplode,
-	Die
+	Die,
+	Bike
 }
 
 enum FireworkType {
@@ -18,11 +19,11 @@ enum FireworkType {
 @export var ACCELERATION : float = 160 * 5000
 @export var DECELERATION : float = 160 * 10
 @export var JUMP_VELOCITY : float = -400.0
-@export var MAX_JUMP_HEIGHT : float = -400 * 1.4;
 @export var JUMP_RELEASE_FORCE : float = 0.5
 @export var GRAVITY : float = 1300.0
 @export var MAX_FALL_SPEED : float = 400.0
-@export_group("Speed")
+@export_group("Powerup")
+@export_subgroup("Firework")
 @export var FIREWORK_SPEED : float = 100.0;
 @export var FIREWORK_MAX_SPEED : float = 80;
 @export var FIREWORK_IGNORE_INPUT_TIME : float = 0.06;
@@ -31,6 +32,9 @@ enum FireworkType {
 @export var FIREWORK_EXPLODE_TIME : float = 0.2;
 @export var FIREWORK_EXPLODE_DECELERATION : float = 100;
 @export var FIREWORK_EXPLODE_GRAVITY : float = 100;
+@export_subgroup("Bike")
+@export var BIKE_SPEED : float = 100.0;
+@export var BIKE_ACCELERATION : float = 100.0;
 
 
 var coyote_time : float = 0.1
@@ -49,6 +53,8 @@ var fireworkDefaultDir : Vector2 = Vector2.ZERO;
 var fireworkExplodeTimer : float = 0.0;
 var fireworkForcedVelocity : Vector2 = Vector2.ZERO;
 var fireworkType : FireworkType = FireworkType.Normal;
+
+var currentBike : Bike;
 
 var state : PlayerState = PlayerState.Normal;
 @onready var fireworkParticle: CPUParticles2D = $SpriteScaler/Sprite2D/FireworkParticle
@@ -76,6 +82,9 @@ func _process(_delta: float) -> void:
 		PlayerState.Firework:
 			if Input.is_action_just_pressed("jump"):
 				velocity.y += JUMP_VELOCITY
+				change_state(PlayerState.Normal);
+		PlayerState.Bike:
+			if Input.is_action_just_pressed("jump"):
 				change_state(PlayerState.Normal);
 
 func _physics_process(delta: float) -> void:
@@ -129,7 +138,18 @@ func _physics_process(delta: float) -> void:
 			move_and_slide();
 			fireworkExplodeTimer -= delta;
 			if fireworkExplodeTimer < 0.0:
-				change_state(PlayerState.Normal)
+				change_state(PlayerState.Normal);
+		PlayerState.Bike:
+			var dir : float = 1 if currentBike.goRight else -1 
+			onFloor = is_on_floor();
+			if not onFloor:
+				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
+			velocity.x = \
+				move_toward(velocity.x, BIKE_SPEED * dir, BIKE_ACCELERATION * delta);
+			move_and_slide();
+			if is_on_wall():
+				change_state(PlayerState.Normal);
+
 
 func change_state(nextState : PlayerState) -> void:
 	if state == nextState:
@@ -152,6 +172,12 @@ func change_state(nextState : PlayerState) -> void:
 						currentFirework = null;
 						return;
 				currentFirework = null;
+		PlayerState.Bike:
+			#Global.stop_time(0.1);
+			currentBike.detach();
+			velocity = Vector2(SPEED, JUMP_VELOCITY);
+			move_and_collide(Vector2.UP * 12.0);
+			currentBike = null;
 	state = nextState;
 	match state:
 		PlayerState.Firework:
@@ -170,6 +196,9 @@ func change_state(nextState : PlayerState) -> void:
 			fireworkForcedVelocity = (aimDir - Vector2(0, 0.5)).normalized() * FIREWORK_EXPLODE_SPEED; 
 			fireworkExplodeTimer = FIREWORK_EXPLODE_TIME;
 			velocity = fireworkForcedVelocity;
+		PlayerState.Bike:
+			if !is_on_floor():
+				move_and_collide(Vector2.DOWN * 8.0);
 
 func handle_jump(delta : float) -> void:
 	if onFloor:
@@ -180,13 +209,10 @@ func handle_jump(delta : float) -> void:
 			velocity.y += JUMP_VELOCITY
 			jump_buffer_timer = 0
 			coyote_timer = 0
-			#jump_begin_tween();
 		jump_buffer_timer -= delta
 	
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= JUMP_RELEASE_FORCE
-		
-	#velocity.y = max(velocity.y, MAX_JUMP_HEIGHT);
 
 func animation_code(inputAxis : float) -> void:
 	if (inputAxis > 0):
@@ -197,4 +223,8 @@ func animation_code(inputAxis : float) -> void:
 func enter_firework(firework : Firework) -> void:
 	currentFirework = firework;
 	change_state(Player.PlayerState.Firework);
+
+func enter_bike(bike : Bike) -> void:
+	currentBike = bike;
+	change_state(Player.PlayerState.Bike);
 	pass;

@@ -1,0 +1,41 @@
+[gd_scene format=4 uid="uid://be0uwyr04deul"]
+
+[ext_resource type="TileSet" uid="uid://tmo4d7f3pqna" path="res://resources/background.tres" id="1_kjktk"]
+[ext_resource type="TileSet" uid="uid://du1tgrn3mqute" path="res://resources/tileset.tres" id="2_u2xta"]
+[ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_pcq77"]
+[ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_kjktk"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_wc41x"]
+[ext_resource type="PackedScene" uid="uid://c0m71f8lyjea2" path="res://scenes/level9.tscn" id="6_u2xta"]
+[ext_resource type="PackedScene" uid="uid://x3yoy4ajnlx" path="res://prefabs/entities/bike.tscn" id="7_u2xta"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
+size = Vector2(8, 32)
+
+[node name="Level" type="Node2D" unique_id=554187013]
+
+[node name="Background" type="TileMapLayer" parent="." unique_id=2037672833]
+tile_set = ExtResource("1_kjktk")
+rendering_quadrant_size = 8
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=184068243]
+tile_map_data = PackedByteArray("AAD//wQAAAANAAEAAAD//wUAAAAMAAMAAAD//wYAAAAOAAEAAAD//wcAAAAOAAEAAAD//wgAAAAOAAEAAAD//wkAAAAOAAEAAAD//woAAAAMAAQAAAAAAAQAAAANAAEAAAAAAAoAAAANAAAAAAABAAQAAAANAAEAAAABAAoAAAANAAAAAAACAAQAAAANAAEAAAACAAoAAAANAAAAAAADAAQAAAANAAEAAAADAAoAAAANAAAAAAAEAAQAAAANAAEAAAAEAAoAAAANAAAAAAAFAAQAAAANAAEAAAAFAAoAAAANAAAAAAAGAAQAAAANAAEAAAAGAAoAAAANAAAAAAAHAAQAAAANAAEAAAAHAAoAAAANAAAAAAAIAAQAAAANAAEAAAAIAAoAAAANAAQAAAAJAAQAAAANAAEAAAAJAAoAAAAMAAQAAAAKAAQAAAANAAEAAAAKAAoAAAANAAAAAAALAAQAAAANAAEAAAALAAoAAAANAAAAAAAMAAQAAAANAAEAAAAMAAoAAAANAAAAAAANAAQAAAANAAEAAAANAAoAAAANAAAAAAAOAAQAAAANAAEAAAAOAAoAAAANAAAAAAAPAAoAAAANAAAAAAD//wsAAAANAAEAAAAAAAUAAAANAAIAAAAAAAsAAAANAAEAAAABAAUAAAANAAIAAAABAAsAAAANAAEAAAACAAUAAAANAAIAAAACAAsAAAANAAEAAAADAAUAAAANAAIAAAADAAsAAAANAAEAAAAEAAUAAAANAAIAAAAEAAsAAAANAAEAAAAFAAUAAAANAAIAAAAFAAsAAAANAAEAAAAGAAUAAAANAAIAAAAGAAsAAAANAAEAAAAHAAUAAAANAAIAAAAHAAsAAAANAAEAAAAIAAUAAAANAAIAAAAIAAsAAAANAAEAAAAJAAUAAAANAAIAAAAJAAsAAAANAAEAAAAKAAUAAAANAAIAAAAKAAsAAAANAAEAAAALAAUAAAANAAIAAAALAAsAAAANAAEAAAAMAAUAAAANAAIAAAAMAAsAAAANAAEAAAANAAUAAAANAAIAAAANAAsAAAANAAEAAAAOAAUAAAANAAIAAAAOAAsAAAANAAEAAAAPAAUAAAANAAIAAAAPAAsAAAANAAEAAAAJAAkAAAAOAAAAAAAIAAkAAAAMAAAAAAA=")
+tile_set = ExtResource("2_u2xta")
+rendering_quadrant_size = 8
+
+[node name="Entities" type="TileMapLayer" parent="." unique_id=765668964]
+tile_map_data = PackedByteArray("AAAAAAkAAAAAAAAAAgA=")
+tile_set = ExtResource("3_pcq77")
+rendering_quadrant_size = 8
+
+[node name="Bike" parent="Entities" unique_id=2103725913 instance=ExtResource("7_u2xta")]
+position = Vector2(20, 76)
+
+[node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("5_wc41x")]
+
+[node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_kjktk")]
+position = Vector2(197.98407, 13.545109)
+nextScene = ExtResource("6_u2xta")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
+position = Vector2(-73.98407, 50.45489)
+shape = SubResource("RectangleShape2D_dwgg1")

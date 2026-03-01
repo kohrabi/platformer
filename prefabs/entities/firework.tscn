@@ -18,7 +18,7 @@ collision_mask = 2
 monitorable = false
 script = ExtResource("1_07a3f")
 particlePrefab = ExtResource("2_kjus7")
-time = 7.5
+time = 5.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1315022956]
 visible = false
