@@ -5,8 +5,124 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y8j6n"]
 shader = ExtResource("2_wweak")
-shader_parameter/progress = 0.446000021185
-shader_parameter/diamondPixelSize = 16.0
+shader_parameter/progress = 0.0
+shader_parameter/diamondPixelSize = 8.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wweak"]
+animation = &"transition_in"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y8j6n"]
+animation = &"transition_out"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ovq7l"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ygq41"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"transitionIn"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gchpv"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"transitionOut"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_wweak"]
+states/transition_in/node = SubResource("AnimationNodeAnimation_wweak")
+states/transition_in/position = Vector2(559, 28)
+states/transition_out/node = SubResource("AnimationNodeAnimation_y8j6n")
+states/transition_out/position = Vector2(559, 185)
+transitions = ["Start", "transition_out", SubResource("AnimationNodeStateMachineTransition_ovq7l"), "transition_out", "transition_in", SubResource("AnimationNodeStateMachineTransition_ygq41"), "transition_in", "transition_out", SubResource("AnimationNodeStateMachineTransition_gchpv")]
+
+[sub_resource type="Animation" id="Animation_wweak"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/transitionIn")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_y8j6n"]
+resource_name = "transition_in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/transitionIn")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_ovq7l"]
+resource_name = "transition_out"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/transitionOut")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ygq41"]
+_data = {
+&"RESET": SubResource("Animation_wweak"),
+&"transition_in": SubResource("Animation_y8j6n"),
+&"transition_out": SubResource("Animation_ovq7l")
+}
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=204938231]
 layer = 999
@@ -20,3 +136,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="AnimationTree" type="AnimationTree" parent="ColorRect" unique_id=71497220]
+tree_root = SubResource("AnimationNodeStateMachine_wweak")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("AnimationPlayer")
+parameters/conditions/transitionIn = false
+parameters/conditions/transitionOut = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect/AnimationTree" unique_id=1991378902]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_ygq41")

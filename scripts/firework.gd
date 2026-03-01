@@ -5,8 +5,15 @@ var attached : bool = false;
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player && !attached:
-		attached = true;
-		self.reparent.call_deferred(body);
-		body.currentFirework = self;
-		body.change_state(Player.PlayerState.Firework);
+		attach(body);
 	pass # Replace with function body.
+
+func attach(player : Player) -> void:
+	attached = true;
+	visible = false;
+	player.enter_firework(self);
+
+func detach() -> void:
+	attached = false;
+	visible = true;
+	pass;

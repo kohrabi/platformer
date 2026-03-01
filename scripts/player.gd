@@ -53,7 +53,7 @@ func _process(delta: float) -> void:
 		aimDir = dir;
 		
 	if Input.is_action_just_pressed("reset"):
-		get_tree().reload_current_scene();
+		Transition.reload_current_scene.call_deferred();
 	
 	match state:
 		PlayerState.Normal:
@@ -96,7 +96,6 @@ func _physics_process(delta: float) -> void:
 				desiredDir = desiredDir.normalized();
 				velocity += desiredDir * FIREWORK_SPEED * delta;
 			velocity = velocity.limit_length(FIREWORK_MAX_SPEED);
-			#if currentFirework:
 			spriteScaler.global_rotation = velocity.angle() + PI / 2;
 			
 			var collision : KinematicCollision2D = move_and_collide(velocity * delta);
@@ -119,7 +118,7 @@ func change_state(nextState : PlayerState) -> void:
 			pass;
 		PlayerState.Firework:
 			if currentFirework:
-				currentFirework.queue_free();
+				currentFirework.detach();
 			spriteScaler.global_rotation = 0
 			fireworkParticle.emitting = false;
 			var obj : Node2D = fireworkParticlePrefab.instantiate();
@@ -132,8 +131,6 @@ func change_state(nextState : PlayerState) -> void:
 			fireworkTimer = FIREWORK_TIME;
 			fireworkDefaultDir = Vector2.UP
 			aimDir = fireworkDefaultDir;
-			currentFirework.global_position = global_position;
-			currentFirework.visible = false;
 			fireworkIgnoreInputTimer = FIREWORK_IGNORE_INPUT_TIME;
 			fireworkParticle.emitting = true;
 			#velocity = aimDir * FIREWORK_MAX_SPEED;
@@ -159,56 +156,10 @@ func handle_jump(delta : float) -> void:
 func animation_code(inputAxis : float) -> void:
 	if (inputAxis > 0):
 		sprite.flip_h = false;
-		#sprite.scale.x = abs(sprite.scale.x) * 1;
 	elif (inputAxis < 0):
 		sprite.flip_h = true;
-		#sprite.scale.x = abs(sprite.scale.x) * -1;
-	
-	#if (onFloor == true && prevOnFloor == false):
-		#jump_end_tween();
-		#pass;
-#
-	#spriteScaler.scale.x = lerpf(spriteScaler.scale.x, 1, 0.3);
-	#spriteScaler.scale.y = lerpf(spriteScaler.scale.y, 1, 0.3);
-	#
-	#if (velocity.y > 0 && !onFloor):
-		#var lerpValue : float = clampf(velocity.y / (MAX_FALL_SPEED * 4), 0, 1);
-		#spriteScaler.scale.x = lerpf(spriteScaler.scale.x, 0.5, lerpValue);
-		#spriteScaler.scale.y = lerpf(spriteScaler.scale.y, 2, lerpValue);
-	#if (onFloor):
-		#spriteScaler.scale.x = lerpf(spriteScaler.scale.x, 1, 0.3);
-		#spriteScaler.scale.y = lerpf(spriteScaler.scale.y, 1, 0.3);
 
-func jump_begin_tween() -> void:
-	var tween : Tween = get_tree().create_tween();
-	tween.bind_node(self);
-	tween.set_parallel(true);
-	tween.tween_property(spriteScaler, "scale:x", 1.8, 0.15) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	tween.tween_property(spriteScaler, "scale:y", 0.5, 0.1) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	tween.chain().tween_property(spriteScaler, "scale:x", 1, 0.15) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	tween.tween_property(spriteScaler, "scale:y", 1, 0.25) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	
-func jump_end_tween() -> void:
-	var tween : Tween = get_tree().create_tween();
-	tween.bind_node(self);
-	tween.set_parallel(true);
-	tween.tween_property(spriteScaler, "scale:x", 1.5, 0.1) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	tween.tween_property(spriteScaler, "scale:y", 0.6, 0.05) \
-		.set_trans(Tween.TRANS_QUART) \
-		.set_ease(Tween.EASE_OUT);
-	tween.chain().tween_property(spriteScaler, "scale:x", 1, 0.1) \
-		.set_trans(Tween.TRANS_EXPO) \
-		.set_ease(Tween.EASE_OUT);
-	tween.tween_property(spriteScaler, "scale:y", 1, 0.15) \
-		.set_trans(Tween.TRANS_EXPO) \
-		.set_ease(Tween.EASE_OUT);
+func enter_firework(firework : Firework) -> void:
+	currentFirework = firework;
+	change_state(Player.PlayerState.Firework);
+	pass;

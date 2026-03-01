@@ -48,5 +48,5 @@ func _follow_region_exited(body: Node2D) -> void:
 	pass;
 
 func _on_body_entered(_body: Node2D) -> void:
-	get_tree().reload_current_scene.call_deferred();
+	Transition.reload_current_scene.call_deferred();
 	pass # Replace with function body.
