@@ -6,7 +6,8 @@ enum PlayerState {
 	Firework,
 	FireworkExplode,
 	Die,
-	Bike
+	Bike,
+	Accel
 }
 
 enum FireworkType {
@@ -47,6 +48,10 @@ var aimDir : Vector2 = Vector2.ZERO;
 var inputAxis : float = 0.0;
 var currentFirework : Firework;
 
+var accelTime : float = 0.0;
+var decelSpeed : float = 0.0;
+var accelGravity : float = 0.0;
+
 var fireworkTimer : float = 0.0;
 var fireworkIgnoreInputTimer : float = 0.0;
 var fireworkDefaultDir : Vector2 = Vector2.ZERO;
@@ -58,6 +63,7 @@ var currentBike : Bike;
 
 var state : PlayerState = PlayerState.Normal;
 @onready var fireworkParticle: CPUParticles2D = $SpriteScaler/Sprite2D/FireworkParticle
+@onready var bikeParticle: CPUParticles2D = $SpriteScaler/Sprite2D/BikeParticle
 @onready var sprite : Sprite2D = $SpriteScaler/Sprite2D;
 @onready var spriteScaler : Node2D = $SpriteScaler;
 
@@ -85,7 +91,7 @@ func _process(_delta: float) -> void:
 				change_state(PlayerState.Normal);
 		PlayerState.Bike:
 			if Input.is_action_just_pressed("jump"):
-				change_state(PlayerState.Normal);
+				change_state(PlayerState.Accel);
 
 func _physics_process(delta: float) -> void:
 	match state:
@@ -129,6 +135,23 @@ func _physics_process(delta: float) -> void:
 			if fireworkTimer <= 0:
 				change_state(PlayerState.Normal);
 			fireworkTimer -= delta;
+		PlayerState.Bike:
+			var dir : float = 1 if currentBike.goRight else -1 
+			onFloor = is_on_floor();
+			if not onFloor:
+				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
+			var collision : KinematicCollision2D = move_and_collide(velocity * delta, true);
+			if collision:
+				var dirVec : Vector2 = Vector2(dir, 0);
+				dirVec = dirVec.slide(collision.get_normal()) * 1.4;
+				velocity = velocity.move_toward(BIKE_SPEED * dirVec, BIKE_ACCELERATION * delta);
+				rotation = dirVec.angle();
+			else:
+				velocity.x = \
+					move_toward(velocity.x, BIKE_SPEED * dir, BIKE_ACCELERATION * delta);
+			move_and_slide();
+			if is_on_wall():
+				change_state(PlayerState.Accel);
 		PlayerState.FireworkExplode:
 			onFloor = is_on_floor();
 			if not onFloor:
@@ -139,17 +162,16 @@ func _physics_process(delta: float) -> void:
 			fireworkExplodeTimer -= delta;
 			if fireworkExplodeTimer < 0.0:
 				change_state(PlayerState.Normal);
-		PlayerState.Bike:
-			var dir : float = 1 if currentBike.goRight else -1 
+		PlayerState.Accel:
 			onFloor = is_on_floor();
 			if not onFloor:
-				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
-			velocity.x = \
-				move_toward(velocity.x, BIKE_SPEED * dir, BIKE_ACCELERATION * delta);
-			move_and_slide();
-			if is_on_wall():
+				velocity.y = min(velocity.y + GRAVITY * delta, MAX_FALL_SPEED)
+			velocity.x = move_toward(velocity.x, 0, decelSpeed * delta);
+			accelTime -= delta;
+			if accelTime <= 0.0:
 				change_state(PlayerState.Normal);
-
+			move_and_slide();
+			print(accelTime);
 
 func change_state(nextState : PlayerState) -> void:
 	if state == nextState:
@@ -173,11 +195,15 @@ func change_state(nextState : PlayerState) -> void:
 						return;
 				currentFirework = null;
 		PlayerState.Bike:
-			#Global.stop_time(0.1);
 			currentBike.detach();
 			velocity = Vector2(SPEED, JUMP_VELOCITY);
 			move_and_collide(Vector2.UP * 12.0);
+			bikeParticle.emitting = false;
 			currentBike = null;
+			rotation = 0.0;
+			
+			accelTime = 0.5;
+			decelSpeed = 10.0;
 	state = nextState;
 	match state:
 		PlayerState.Firework:
@@ -197,8 +223,10 @@ func change_state(nextState : PlayerState) -> void:
 			fireworkExplodeTimer = FIREWORK_EXPLODE_TIME;
 			velocity = fireworkForcedVelocity;
 		PlayerState.Bike:
+			Global.stop_time(0.1);
 			if !is_on_floor():
 				move_and_collide(Vector2.DOWN * 8.0);
+			bikeParticle.emitting = true;
 
 func handle_jump(delta : float) -> void:
 	if onFloor:

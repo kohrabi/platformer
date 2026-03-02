@@ -5,7 +5,7 @@
 [ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_v3b64"]
 [ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="4_72klc"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="6_djf6h"]
-[ext_resource type="PackedScene" uid="uid://be0uwyr04deul" path="res://scenes/level10.tscn" id="7_rdkg4"]
+[ext_resource type="PackedScene" uid="uid://be0uwyr04deul" path="res://scenes/level11.tscn" id="7_rdkg4"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="7_v1l7f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_utlmm"]
@@ -54,5 +54,3 @@ nextScene = ExtResource("7_rdkg4")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(124.21731, -58.799164)
 shape = SubResource("RectangleShape2D_dwgg1")
-
-[connection signal="body_entered" from="Entities/FireworkExplode" to="Entities/FireworkExplode" method="_on_body_entered"]

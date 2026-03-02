@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dh1yanm3xa2jf" path="res://sprites/platformer_player.png" id="2_4dohe"]
 [ext_resource type="Texture2D" uid="uid://bqmhp27lq1kds" path="res://sprites/platformer_playerbike.png" id="2_grlhh"]
 [ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="3_r66lb"]
+[ext_resource type="Texture2D" uid="uid://djlf8yrft2te5" path="res://sprites/circleDark.png" id="4_j0cl5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2h75"]
 size = Vector2(4, 4)
@@ -595,17 +596,19 @@ FIREWORK_EXPLODE_SPEED = 200.0
 FIREWORK_EXPLODE_TIME = 1.0
 FIREWORK_EXPLODE_DECELERATION = 200.0
 FIREWORK_EXPLODE_GRAVITY = 200.0
-BIKE_ACCELERATION = 200.0
+BIKE_SPEED = 120.0
+BIKE_ACCELERATION = 300.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395993521]
-position = Vector2(0, 2)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_g2h75")
 
 [node name="SpriteScaler" type="Node2D" parent="." unique_id=1338256241]
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteScaler" unique_id=1978635507]
-texture = ExtResource("2_4dohe")
-hframes = 5
+position = Vector2(0, -4)
+texture = ExtResource("2_grlhh")
+hframes = 2
 
 [node name="FireworkParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1683100698]
 position = Vector2(0, 5)
@@ -626,26 +629,25 @@ linear_accel_min = -10.0
 linear_accel_max = 10.0
 scale_amount_curve = SubResource("Curve_1txc5")
 
-[node name="FireworkParticle2" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=378620078]
-visible = false
-position = Vector2(0, 5)
+[node name="BikeParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1814464302]
+show_behind_parent = true
+position = Vector2(-3, 6)
 emitting = false
-amount = 50
-texture = ExtResource("3_r66lb")
-lifetime = 0.5
+amount = 20
+texture = ExtResource("4_j0cl5")
+lifetime = 0.3
 emission_shape = 1
-emission_sphere_radius = 4.0
-direction = Vector2(0, 1)
+emission_sphere_radius = 3.0
+direction = Vector2(-1, 0)
+spread = 10.0
 gravity = Vector2(0, 0)
-initial_velocity_min = 60.0
-initial_velocity_max = 60.0
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
 angular_velocity_min = -90.0
 angular_velocity_max = 90.0
-orbit_velocity_min = -0.25
-orbit_velocity_max = 0.25
-radial_accel_min = -2.5
-radial_accel_max = 2.5
-tangential_accel_min = -16.0
+orbit_velocity_min = -0.5
+linear_accel_min = -10.0
+linear_accel_max = 10.0
 scale_amount_curve = SubResource("Curve_1txc5")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=155250346]

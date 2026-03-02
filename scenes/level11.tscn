@@ -1,0 +1,73 @@
+[gd_scene format=4 uid="uid://be0uwyr04deul"]
+
+[ext_resource type="TileSet" uid="uid://tmo4d7f3pqna" path="res://resources/background.tres" id="1_kjktk"]
+[ext_resource type="TileSet" uid="uid://du1tgrn3mqute" path="res://resources/tileset.tres" id="2_u2xta"]
+[ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_pcq77"]
+[ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="5_croyr"]
+[ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_kjktk"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_wc41x"]
+[ext_resource type="PackedScene" uid="uid://c0m71f8lyjea2" path="res://scenes/level9.tscn" id="6_u2xta"]
+[ext_resource type="PackedScene" uid="uid://x3yoy4ajnlx" path="res://prefabs/entities/bike.tscn" id="7_u2xta"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4hax3"]
+size = Vector2(28, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k6tck"]
+size = Vector2(272, 348)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
+size = Vector2(8, 32)
+
+[node name="Level" type="Node2D" unique_id=554187013]
+
+[node name="Background" type="TileMapLayer" parent="." unique_id=2037672833]
+tile_set = ExtResource("1_kjktk")
+rendering_quadrant_size = 8
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=184068243]
+tile_map_data = PackedByteArray("AAD//wQAAAAOAAEAAAD//wUAAAAOAAEAAAD//wYAAAAOAAEAAAD//wcAAAAOAAEAAAD//wgAAAAOAAEAAAD//wkAAAAOAAEAAAD//woAAAAOAAEAAAD//wsAAAAOAAEAAAAQAA4AAAANAAAAAAAQAP//AAANAAIAAAAPAA4AAAANAAAAAAAPAP//AAANAAIAAAAOAA4AAAANAAAAAAAOAP//AAANAAIAAAANAA4AAAANAAAAAAANAP//AAANAAIAAAAMAA4AAAANAAAAAAAMAP//AAANAAIAAAALAP//AAANAAIAAAAKAP//AAANAAIAAAAJAP//AAANAAIAAAAIAA4AAAANAAAAAAAIAP//AAANAAIAAAAHAA4AAAANAAAAAAAHAP//AAANAAIAAAAGAA4AAAANAAAAAAAGAP//AAANAAIAAAAFAP//AAANAAIAAAAEAP//AAANAAIAAAADAP//AAANAAIAAAACAP//AAANAAIAAAABAP//AAANAAIAAAAAAP//AAANAAIAAAD//w4AAAAMAAQAAAD//w0AAAAOAAEAAAD//wwAAAAOAAEAAAD//wMAAAAOAAEAAAD//wIAAAAOAAEAAAD//wEAAAAOAAEAAAD//wAAAAAOAAEAAAD/////AAAMAAMAAAAFAA4AAAANAAAAAAAEAA4AAAANAAAAAAADAA4AAAANAAAAAAACAA4AAAANAAAAAAABAA4AAAANAAAAAAAAAA4AAAANAAAAAAALAA4AAAANAAAAAAAKAA4AAAANAAAAAAAJAA4AAAANAAAAAAAVAA8AAAAOAAEAAAAgAA8AAAAMAAEAAAAgAA4AAAAMAAEAAAAgAA0AAAAMAAEAAAAgAAwAAAAMAAEAAAAgAAsAAAAMAAEAAAAgAAoAAAAMAAEAAAAgAAkAAAAMAAEAAAAgAAgAAAAMAAEAAAAgAAcAAAAMAAEAAAAgAAYAAAAMAAEAAAAgAAUAAAAMAAEAAAAgAAQAAAAMAAEAAAAgAAMAAAAMAAEAAAAgAAIAAAAMAAEAAAAgAAEAAAAMAAEAAAAgAAAAAAAMAAEAAAAgAP//AAAMAAEAAAAgAP7/AAAMAAEAAAAgAP3/AAAMAAEAAAAVAP//AAANAAIAAAAUAP//AAANAAIAAAATAP//AAANAAIAAAASAP//AAANAAIAAAARAP//AAANAAIAAAARAA0AAAAOAAQAAAASAAwAAAAOAAQAAAATAAsAAAAOAAQAAAAUAAoAAAAOAAQAAAAVAAkAAAAPAAMAAAAVAAoAAAAPAAQAAAAVAAwAAAAOAAEAAAAVAAsAAAAOAAEAAAAUAAsAAAAPAAIAAAATAAwAAAAPAAIAAAASAA0AAAAPAAIAAAARAA4AAAANAAQAAAAVAA0AAAAOAAEAAAAVAA4AAAAOAAEAAAAhAPP/AAANAAEAAAAgAPz/AAAMAAEAAAAgAPv/AAAMAAEAAAAgAPr/AAAMAAEAAAAgAPn/AAAMAAEAAAAgAPj/AAAMAAEAAAAgAPf/AAAMAAEAAAAgAPb/AAAMAAEAAAAgAPX/AAAMAAEAAAAgAPT/AAAMAAEAAAAgAPP/AAAMAAEAAAAZAP//AAANAAIAAAAZAP7/AAANAAEAAAAYAP//AAANAAIAAAAYAP7/AAANAAEAAAAXAP//AAANAAIAAAAWAP//AAANAAIAAAAcAP//AAAOAAIAAAAcAP7/AAAOAAEAAAAcAP3/AAAOAAEAAAAcAPz/AAAOAAEAAAAcAPv/AAAOAAEAAAAcAPr/AAAOAAEAAAAcAPn/AAAOAAEAAAAcAPj/AAAOAAEAAAAcAPf/AAAOAAEAAAAbAP//AAANAAIAAAAbAP7/AAANAAEAAAAbAP3/AAANAAEAAAAbAPz/AAANAAEAAAAbAPv/AAANAAEAAAAbAPr/AAANAAEAAAAbAPn/AAANAAEAAAAbAPj/AAANAAEAAAAbAPf/AAANAAEAAAAaAP//AAANAAIAAAAaAP7/AAANAAEAAAAhAPL/AAANAAEAAAAhAPH/AAANAAEAAAAhAPD/AAANAAEAAAAgAPL/AAAMAAEAAAAgAPH/AAAMAAEAAAAgAPD/AAAMAAEAAAAhAO//AAANAAEAAAAgAO//AAAMAAEAAAAcAOj/AAAOAAEAAAAhAOr/AAANAAAAAAAgAOr/AAAMAAAAAAAhAO7/AAANAAEAAAAhAO3/AAANAAEAAAAhAOz/AAANAAEAAAAhAOv/AAANAAEAAAAgAO7/AAAMAAEAAAAgAO3/AAAMAAEAAAAgAOz/AAAMAAEAAAAgAOv/AAAMAAEAAAAcAPb/AAAOAAEAAAAcAPX/AAAOAAEAAAAcAPT/AAAOAAAAAAAbAPb/AAANAAEAAAAbAPX/AAANAAEAAAAbAPT/AAANAAAAAAAaAPX/AAANAAEAAAAaAPT/AAANAAAAAAAZAPX/AAANAAEAAAAZAPT/AAANAAAAAAAYAPX/AAANAAEAAAAYAPT/AAAMAAQAAAAcAOf/AAAOAAEAAAAcAOb/AAAOAAEAAAAcAOX/AAAMAAMAAAAYAOz/AAANAAEAAAAYAO3/AAAMAAMAAAAYAO7/AAAOAAEAAAAYAO//AAAOAAEAAAAYAPD/AAAOAAEAAAAYAPH/AAAOAAEAAAAYAPL/AAAOAAEAAAAYAPP/AAAOAAEAAAAcAOv/AAAOAAEAAAAZAOz/AAANAAEAAAAZAO3/AAANAAIAAAAaAOz/AAANAAEAAAAaAO3/AAANAAIAAAAbAOz/AAANAAEAAAAbAO3/AAANAAIAAAAcAOz/AAAOAAEAAAAcAO3/AAAOAAIAAAAcAOr/AAAOAAEAAAAcAOn/AAAOAAEAAAAhAOX/AAANAAIAAAAgAOX/AAANAAIAAAAfAOX/AAANAAIAAAAeAOX/AAANAAIAAAAdAOX/AAANAAIAAAA=")
+tile_set = ExtResource("2_u2xta")
+rendering_quadrant_size = 8
+
+[node name="Entities" type="TileMapLayer" parent="." unique_id=765668964]
+tile_map_data = PackedByteArray("AAABAA0AAAAAAAAAAgAdAAQAAAAAAAAABAAaAPH/AAAAAAAAAwA=")
+tile_set = ExtResource("3_pcq77")
+rendering_quadrant_size = 8
+
+[node name="Bike" parent="Entities" unique_id=2103725913 instance=ExtResource("7_u2xta")]
+position = Vector2(36, 108)
+
+[node name="Dog" parent="Entities" unique_id=2083497293 node_paths=PackedStringArray("followRegion") instance=ExtResource("5_croyr")]
+position = Vector2(204, -100)
+followRegion = NodePath("FollowRegion")
+
+[node name="FollowRegion" type="Area2D" parent="Entities/Dog" unique_id=640584558]
+top_level = true
+position = Vector2(36, 92)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Dog/FollowRegion" unique_id=984181715]
+position = Vector2(182, -215)
+shape = SubResource("RectangleShape2D_4hax3")
+
+[node name="Camera2D" parent="." unique_id=1071947445 node_paths=PackedStringArray("cameraRegion") instance=ExtResource("5_wc41x")]
+cameraRegion = NodePath("CollisionShape2D")
+followPlayer = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D" unique_id=1142217868]
+top_level = true
+position = Vector2(136, -46)
+shape = SubResource("RectangleShape2D_k6tck")
+
+[node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_kjktk")]
+position = Vector2(197.98407, 13.545109)
+nextScene = ExtResource("6_u2xta")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
+position = Vector2(70.01593, -205.5451)
+shape = SubResource("RectangleShape2D_dwgg1")
+
+[connection signal="body_entered" from="Entities/FireworkExplode" to="Entities/FireworkExplode" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]
