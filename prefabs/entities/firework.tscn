@@ -10,7 +10,7 @@ _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.59140
 point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
-size = Vector2(8, 8)
+size = Vector2(10, 10)
 
 [node name="Firework" type="Area2D" unique_id=2103725913]
 collision_layer = 4

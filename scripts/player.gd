@@ -29,13 +29,17 @@ enum FireworkType {
 @export var FIREWORK_MAX_SPEED : float = 80;
 @export var FIREWORK_IGNORE_INPUT_TIME : float = 0.06;
 @export_subgroup("Firework Explode")
-@export var FIREWORK_EXPLODE_SPEED : float = 100.0;
+@export var FIREWORK_EXPLODE_SPEED : float = 100.0; # Initial Speed
 @export var FIREWORK_EXPLODE_TIME : float = 0.2;
 @export var FIREWORK_EXPLODE_DECELERATION : float = 100;
 @export var FIREWORK_EXPLODE_GRAVITY : float = 100;
 @export_subgroup("Bike")
 @export var BIKE_SPEED : float = 100.0;
 @export var BIKE_ACCELERATION : float = 100.0;
+@export var BIKE_LEAVE_SPEED : float = 50.0;
+@export var BIKE_LEAVE_GRAVITY : float = 50.0;
+@export var BIKE_LEAVE_TIME : float = 0.3;
+@export var BIKE_LEAVE_DECELERATION : float = 50.0; # Initial Speed
 
 
 var coyote_time : float = 0.1
@@ -49,14 +53,15 @@ var inputAxis : float = 0.0;
 var currentFirework : Firework;
 
 var accelTime : float = 0.0;
+var useInput : bool = false;
+var accelSpeed : float = 0.0;
+var accelTo : float = 0.0;
 var decelSpeed : float = 0.0;
 var accelGravity : float = 0.0;
 
 var fireworkTimer : float = 0.0;
 var fireworkIgnoreInputTimer : float = 0.0;
 var fireworkDefaultDir : Vector2 = Vector2.ZERO;
-var fireworkExplodeTimer : float = 0.0;
-var fireworkForcedVelocity : Vector2 = Vector2.ZERO;
 var fireworkType : FireworkType = FireworkType.Normal;
 
 var currentBike : Bike;
@@ -88,7 +93,7 @@ func _process(_delta: float) -> void:
 		PlayerState.Firework:
 			if Input.is_action_just_pressed("jump"):
 				velocity.y += JUMP_VELOCITY
-				change_state(PlayerState.Normal);
+				exit_firework();
 		PlayerState.Bike:
 			if Input.is_action_just_pressed("jump"):
 				change_state(PlayerState.Accel);
@@ -108,7 +113,6 @@ func _physics_process(delta: float) -> void:
 			handle_jump(delta)
 			
 			move_and_slide();
-			animation_code(inputAxis);
 			if onFloor:
 				coyote_timer = coyote_time
 			elif coyote_timer > 0:
@@ -128,12 +132,12 @@ func _physics_process(delta: float) -> void:
 			
 			var collision : KinematicCollision2D = move_and_collide(velocity * delta);
 			if collision:
-				change_state(PlayerState.Normal);
+				exit_firework();
 				velocity = velocity.bounce(collision.get_normal());
 			#move_and_slide();
 			
 			if fireworkTimer <= 0:
-				change_state(PlayerState.Normal);
+				exit_firework();
 			fireworkTimer -= delta;
 		PlayerState.Bike:
 			var dir : float = 1 if currentBike.goRight else -1 
@@ -152,58 +156,63 @@ func _physics_process(delta: float) -> void:
 			move_and_slide();
 			if is_on_wall():
 				change_state(PlayerState.Accel);
-		PlayerState.FireworkExplode:
-			onFloor = is_on_floor();
-			if not onFloor:
-				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
-			velocity.x = \
-				move_toward(velocity.x, SPEED * inputAxis, FIREWORK_EXPLODE_DECELERATION * delta);
-			move_and_slide();
-			fireworkExplodeTimer -= delta;
-			if fireworkExplodeTimer < 0.0:
-				change_state(PlayerState.Normal);
+
 		PlayerState.Accel:
 			onFloor = is_on_floor();
 			if not onFloor:
-				velocity.y = min(velocity.y + GRAVITY * delta, MAX_FALL_SPEED)
-			velocity.x = move_toward(velocity.x, 0, decelSpeed * delta);
+				velocity.y = min(velocity.y + accelGravity * delta, MAX_FALL_SPEED)
+			if useInput:
+				velocity.x = \
+					move_toward(velocity.x, accelTo * inputAxis, accelSpeed * delta);
+			else:
+				velocity.x = \
+					move_toward(velocity.x, accelTo, accelSpeed * delta);
+			move_and_slide();
 			accelTime -= delta;
 			if accelTime <= 0.0:
 				change_state(PlayerState.Normal);
-			move_and_slide();
-			print(accelTime);
+			print(velocity);
+	animation_code(inputAxis);
 
 func change_state(nextState : PlayerState) -> void:
 	if state == nextState:
 		printerr("Currently in nextState ", PlayerState.find_key(nextState));
 		return;
+	var prevState : PlayerState = state;
 	match state:
 		PlayerState.Normal:
 			velocity = Vector2.ZERO;
 		PlayerState.Firework:
-			if nextState != PlayerState.FireworkExplode:
-				if currentFirework:
-					currentFirework.detach(global_position);
-				Global.currentCamera.shake(2, 0.2);
-				Global.stop_time(0.1);
-				spriteScaler.global_rotation = 0;
-				fireworkParticle.emitting = false;
-				match currentFirework.type:
-					Firework.Type.Explode:
-						change_state(PlayerState.FireworkExplode);
-						currentFirework = null;
-						return;
-				currentFirework = null;
+			if currentFirework:
+				currentFirework.detach(global_position);
+				# Should be going to accel
+				if currentFirework.type == Firework.Type.Explode:
+					velocity = (aimDir - Vector2(0, 0.5)).normalized() * FIREWORK_EXPLODE_SPEED;
+					useInput = true;
+					accelTime = FIREWORK_EXPLODE_TIME;
+					accelGravity = FIREWORK_EXPLODE_GRAVITY;
+					accelTo = SPEED;
+					accelSpeed = FIREWORK_EXPLODE_DECELERATION;
+			Global.currentCamera.shake(2, 0.2);
+			Global.stop_time(0.1);
+			spriteScaler.global_rotation = 0;
+			fireworkParticle.emitting = false;
+			currentFirework = null;
 		PlayerState.Bike:
 			currentBike.detach();
 			velocity = Vector2(SPEED, JUMP_VELOCITY);
-			move_and_collide(Vector2.UP * 12.0);
+			move_and_collide(Vector2.UP * 8.0);
 			bikeParticle.emitting = false;
 			currentBike = null;
 			rotation = 0.0;
 			
-			accelTime = 0.5;
-			decelSpeed = 10.0;
+			# Should be going to accel
+			velocity = Vector2(aimDir.x, -1.0).normalized() * BIKE_LEAVE_SPEED;
+			useInput = true;
+			accelTime = BIKE_LEAVE_TIME;
+			accelGravity = BIKE_LEAVE_GRAVITY;
+			accelTo = SPEED;
+			accelSpeed = BIKE_LEAVE_DECELERATION;
 	state = nextState;
 	match state:
 		PlayerState.Firework:
@@ -218,10 +227,6 @@ func change_state(nextState : PlayerState) -> void:
 			fireworkIgnoreInputTimer = FIREWORK_IGNORE_INPUT_TIME;
 			fireworkParticle.emitting = true;
 			Global.stop_time(0.1);
-		PlayerState.FireworkExplode:
-			fireworkForcedVelocity = (aimDir - Vector2(0, 0.5)).normalized() * FIREWORK_EXPLODE_SPEED; 
-			fireworkExplodeTimer = FIREWORK_EXPLODE_TIME;
-			velocity = fireworkForcedVelocity;
 		PlayerState.Bike:
 			Global.stop_time(0.1);
 			if !is_on_floor():
@@ -247,6 +252,13 @@ func animation_code(inputAxis : float) -> void:
 		sprite.flip_h = false;
 	elif (inputAxis < 0):
 		sprite.flip_h = true;
+
+func exit_firework() -> void:
+	match currentFirework.type:
+		Firework.Type.Normal:
+			change_state(Player.PlayerState.Normal);
+		Firework.Type.Explode:
+			change_state(Player.PlayerState.Accel);
 
 func enter_firework(firework : Firework) -> void:
 	currentFirework = firework;

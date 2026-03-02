@@ -10,7 +10,7 @@ _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.59140
 point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
-size = Vector2(8, 8)
+size = Vector2(10, 10)
 
 [node name="FireworkExplode" type="Area2D" unique_id=2103725913]
 collision_layer = 4
@@ -41,7 +41,7 @@ radial_accel_max = 2.5
 scale_amount_curve = SubResource("Curve_efe5l")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2109018983]
-position = Vector2(0, 1)
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_wwpf4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1954554996]
