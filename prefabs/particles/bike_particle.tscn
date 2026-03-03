@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://3j2d140e8pui" path="res://scripts/bike_particle.gd" id="1_4b2qo"]
 [ext_resource type="Texture2D" uid="uid://b6cqekjyxwqf" path="res://sprites/powerup.png" id="2_weobr"]
 [ext_resource type="Texture2D" uid="uid://djlf8yrft2te5" path="res://sprites/circleDark.png" id="3_yly81"]
+[ext_resource type="AudioStream" uid="uid://0kgnr8p2lm6x" path="res://audio/explode.wav" id="4_vpypv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
 size = Vector2(8, 8)
@@ -10,6 +11,11 @@ size = Vector2(8, 8)
 [sub_resource type="Curve" id="Curve_vpypv"]
 _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
 point_count = 2
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0ccvj"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("4_vpypv")
 
 [node name="Bike" type="CharacterBody2D" unique_id=1778248818]
 collision_layer = 16
@@ -42,3 +48,7 @@ orbit_velocity_min = -0.5
 linear_accel_min = -10.0
 linear_accel_max = 10.0
 scale_amount_curve = SubResource("Curve_vpypv")
+
+[node name="Explode" type="AudioStreamPlayer" parent="." unique_id=2086224594]
+stream = SubResource("AudioStreamRandomizer_0ccvj")
+bus = &"SFX"

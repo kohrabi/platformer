@@ -17,6 +17,7 @@ func _process(delta: float) -> void:
 
 func explode() -> void:
 	play(&"explode");
+	$Smallfireworkexplode.play();
 	finished = true;
 	await animation_finished;
 	queue_free();

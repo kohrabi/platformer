@@ -2,6 +2,12 @@
 
 [ext_resource type="FontFile" uid="uid://dgs2lcn7abwkf" path="res://fonts/pico-8.ttf" id="1_anmfj"]
 [ext_resource type="Script" uid="uid://owkftn8an8u" path="res://scripts/score_particle.gd" id="2_1wvjg"]
+[ext_resource type="AudioStream" uid="uid://b37ygx7a4xiwf" path="res://audio/lixi.wav" id="3_vw11v"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vw11v"]
+random_pitch = 1.4142135
+streams_count = 1
+stream_0/stream = ExtResource("3_vw11v")
 
 [node name="ScoreParticle" type="Label" unique_id=1694989315]
 offset_right = 16.0
@@ -24,3 +30,7 @@ theme_override_colors/font_color = Color(1, 0.6392157, 0, 1)
 theme_override_fonts/font = ExtResource("1_anmfj")
 theme_override_font_sizes/font_size = 5
 text = "1000"
+
+[node name="Lixi" type="AudioStreamPlayer" parent="." unique_id=1073284624]
+stream = SubResource("AudioStreamRandomizer_vw11v")
+autoplay = true

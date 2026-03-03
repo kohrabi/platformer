@@ -5,6 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://bqmhp27lq1kds" path="res://sprites/platformer_playerbike.png" id="2_grlhh"]
 [ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="3_r66lb"]
 [ext_resource type="Texture2D" uid="uid://djlf8yrft2te5" path="res://sprites/circleDark.png" id="4_j0cl5"]
+[ext_resource type="AudioStream" uid="uid://0kgnr8p2lm6x" path="res://audio/explode.wav" id="6_2tsmg"]
+[ext_resource type="AudioStream" uid="uid://be3mdtwbu37l8" path="res://audio/walk.wav" id="6_qpvj0"]
+[ext_resource type="AudioStream" uid="uid://cdb74udlo3e8h" path="res://audio/exploderemain.wav" id="8_ohfey"]
+[ext_resource type="AudioStream" uid="uid://bfpd42fycwugb" path="res://audio/jump.wav" id="9_ss567"]
+[ext_resource type="AudioStream" uid="uid://b2odhaadhxe5s" path="res://audio/firework.wav" id="10_o5qwm"]
+[ext_resource type="AudioStream" uid="uid://bliodpqs4kole" path="res://audio/die3.wav" id="11_34bpc"]
+[ext_resource type="AudioStream" uid="uid://bqbtihuj3ib4k" path="res://audio/use.wav" id="12_34bpc"]
+[ext_resource type="AudioStream" uid="uid://dgesfn8vod34d" path="res://audio/bike.wav" id="13_4gyf0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2h75"]
 size = Vector2(4, 4)
@@ -569,6 +577,20 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector2(4, 4)]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_walking"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ht1c8"]
 _data = {
@@ -579,6 +601,41 @@ _data = {
 &"idle": SubResource("Animation_r66lb"),
 &"run": SubResource("Animation_1txc5")
 }
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_sq3nx"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("6_2tsmg")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_34bpc"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("6_qpvj0")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4gyf0"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("8_ohfey")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mpf6q"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("9_ss567")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7fnqb"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("10_o5qwm")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7js5u"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("11_34bpc")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_o58jd"]
+random_pitch = 1.1892071
+streams_count = 1
+stream_0/stream = ExtResource("12_34bpc")
 
 [node name="Player" type="CharacterBody2D" unique_id=895377601 groups=["Player"]]
 collision_layer = 2
@@ -631,6 +688,24 @@ linear_accel_min = -10.0
 linear_accel_max = 10.0
 scale_amount_curve = SubResource("Curve_1txc5")
 
+[node name="AccelParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1623065010]
+position = Vector2(0, 5)
+emitting = false
+amount = 20
+texture = ExtResource("3_r66lb")
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector2(0, 1)
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+linear_accel_min = -5.0
+linear_accel_max = 5.0
+scale_amount_curve = SubResource("Curve_1txc5")
+
 [node name="BikeParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1814464302]
 show_behind_parent = true
 position = Vector2(-3, 6)
@@ -660,3 +735,33 @@ anim_player = NodePath("AnimationPlayer")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationTree" unique_id=1538479462]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_ht1c8")
+
+[node name="Sounds" type="Node" parent="." unique_id=1889200994]
+
+[node name="Explode" type="AudioStreamPlayer" parent="Sounds" unique_id=1430511350]
+stream = SubResource("AudioStreamRandomizer_sq3nx")
+bus = &"SFX"
+
+[node name="Walk" type="AudioStreamPlayer" parent="Sounds" unique_id=941134885]
+stream = SubResource("AudioStreamRandomizer_34bpc")
+volume_db = -80.0
+bus = &"SFX"
+
+[node name="ExplodeRemain" type="AudioStreamPlayer" parent="Sounds" unique_id=926626003]
+stream = SubResource("AudioStreamRandomizer_4gyf0")
+bus = &"SFX"
+
+[node name="Jump" type="AudioStreamPlayer" parent="Sounds" unique_id=987440916]
+stream = SubResource("AudioStreamRandomizer_mpf6q")
+
+[node name="Firework" type="AudioStreamPlayer" parent="Sounds" unique_id=1729288666]
+stream = SubResource("AudioStreamRandomizer_7fnqb")
+
+[node name="Die" type="AudioStreamPlayer" parent="Sounds" unique_id=952575649]
+stream = SubResource("AudioStreamRandomizer_7js5u")
+
+[node name="Use" type="AudioStreamPlayer" parent="Sounds" unique_id=736549360]
+stream = SubResource("AudioStreamRandomizer_o58jd")
+
+[node name="Bike" type="AudioStreamPlayer" parent="Sounds" unique_id=2065937987]
+stream = ExtResource("13_4gyf0")

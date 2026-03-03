@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://kgkxnswqxasr" path="res://sprites/smallfirework.png" id="1_w7fl7"]
 [ext_resource type="Script" uid="uid://d1n4t4pokelry" path="res://scripts/small_firework.gd" id="2_4glv1"]
+[ext_resource type="AudioStream" uid="uid://c2rxjr10eg6xg" path="res://audio/smallfireworkexplode.wav" id="3_4glv1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mgwus"]
 atlas = ExtResource("1_w7fl7")
@@ -54,7 +55,15 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4glv1"]
+random_pitch = 1.2599211
+streams_count = 1
+stream_0/stream = ExtResource("3_4glv1")
+
 [node name="SmallFirework" type="AnimatedSprite2D" unique_id=970689873]
 sprite_frames = SubResource("SpriteFrames_s57dx")
 autoplay = "default"
 script = ExtResource("2_4glv1")
+
+[node name="Smallfireworkexplode" type="AudioStreamPlayer" parent="." unique_id=1327000327]
+stream = SubResource("AudioStreamRandomizer_4glv1")

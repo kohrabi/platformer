@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c4n85govwf3ya" path="res://scripts/transition.gd" id="1_g12jt"]
 [ext_resource type="Shader" uid="uid://721x8bg1ue3c" path="res://resources/transition.gdshader" id="2_wweak"]
+[ext_resource type="AudioStream" uid="uid://cmvyd2ywmd8uh" path="res://audio/level_finished.wav" id="3_y8j6n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y8j6n"]
 shader = ExtResource("2_wweak")
@@ -147,3 +148,6 @@ parameters/conditions/transitionOut = false
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect/AnimationTree" unique_id=1991378902]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_ygq41")
+
+[node name="LevelFinished" type="AudioStreamPlayer" parent="." unique_id=911738950]
+stream = ExtResource("3_y8j6n")

@@ -53,4 +53,4 @@ nextScene = ExtResource("7_djf6h")
 position = Vector2(124.21731, -58.799164)
 shape = SubResource("RectangleShape2D_dwgg1")
 
-[connection signal="body_entered" from="Entities/@Area2D@92421" to="Entities/@Area2D@92421" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/@Area2D@113734" to="Entities/@Area2D@113734" method="_on_body_entered"]

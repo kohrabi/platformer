@@ -8,6 +8,9 @@ var following : bool = false;
 var prevPosition : Vector2 = Vector2.ZERO;
 var velocity : Vector2 = Vector2.ZERO;
 var tracked : bool = false;
+@onready var dogSound: AudioStreamPlayer = $Dog
+var dogSoundTimer : float = 0.0;
+const DOG_SOUND_TIME = 0.5;
 
 func _ready() -> void:
 	followRegion.body_entered.connect(_follow_region_entered);
@@ -32,6 +35,11 @@ func _physics_process(delta: float) -> void:
 		elif dir < 0:
 			sprite.flip_h = true;
 		prevPosition = global_position;
+		dogSoundTimer -= delta;
+		if dogSoundTimer <= 0.0:
+			dogSoundTimer = DOG_SOUND_TIME;
+			dogSound.play();
+		
 	else:
 		following = false;
 	pass;

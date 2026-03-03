@@ -25,7 +25,7 @@ tile_set = ExtResource("2_u2xta")
 rendering_quadrant_size = 8
 
 [node name="Entities" type="TileMapLayer" parent="." unique_id=765668964]
-tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAgA=")
+tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAgAXAAsAAAAAAAAAAwA=")
 tile_set = ExtResource("3_pcq77")
 rendering_quadrant_size = 8
 
@@ -51,3 +51,5 @@ shape = SubResource("RectangleShape2D_dwgg1")
 
 [node name="Reset" parent="." unique_id=1883135819 instance=ExtResource("8_croyr")]
 position = Vector2(68, 148)
+
+[connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]

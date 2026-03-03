@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bfxducxlulepl" path="res://scripts/dog.gd" id="1_j21rx"]
 [ext_resource type="Texture2D" uid="uid://dqjdr8s68uuaf" path="res://sprites/dog.png" id="1_qppv8"]
+[ext_resource type="AudioStream" uid="uid://yjokhygkvjx" path="res://audio/dog.wav" id="3_u7cer"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j21rx"]
 animation = &"idle"
@@ -88,6 +89,11 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_utlmm"]
 size = Vector2(8, 3)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_u7cer"]
+random_pitch = 1.122462
+streams_count = 1
+stream_0/stream = ExtResource("3_u7cer")
+
 [node name="Dog" type="Area2D" unique_id=2083497293]
 collision_layer = 0
 collision_mask = 2
@@ -110,5 +116,8 @@ libraries/ = SubResource("AnimationLibrary_3qbet")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1548230275]
 position = Vector2(0, 2.5)
 shape = SubResource("RectangleShape2D_utlmm")
+
+[node name="Dog" type="AudioStreamPlayer" parent="." unique_id=2102161687]
+stream = SubResource("AudioStreamRandomizer_u7cer")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

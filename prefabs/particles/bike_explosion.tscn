@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://bx213sne2oo3i"]
+
+[ext_resource type="Texture2D" uid="uid://chfg4gfxs4ic1" path="res://sprites/explosion.png" id="1_5nql3"]
+[ext_resource type="Script" uid="uid://ui2fbalurldq" path="res://scripts/animated_sprite_autokill.gd" id="2_i3atc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3atc"]
+atlas = ExtResource("1_5nql3")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_viw7f"]
+atlas = ExtResource("1_5nql3")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1hox"]
+atlas = ExtResource("1_5nql3")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ar14"]
+atlas = ExtResource("1_5nql3")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c6pp5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3atc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_viw7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b1hox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ar14")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="BikeExplosion" type="AnimatedSprite2D" unique_id=1319602485]
+sprite_frames = SubResource("SpriteFrames_c6pp5")
+autoplay = "default"
+frame = 4
+frame_progress = 1.0
+script = ExtResource("2_i3atc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1189895881]
+show_behind_parent = true
+position = Vector2(-3, -1)
+rotation = -1.9844394
+sprite_frames = SubResource("SpriteFrames_c6pp5")
+autoplay = "default"
+frame = 4
+frame_progress = 1.0
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=1688383073]
+show_behind_parent = true
+position = Vector2(1.9999998, 1.9999996)
+rotation = 0.6614798
+sprite_frames = SubResource("SpriteFrames_c6pp5")
+autoplay = "default"
+frame = 4
+frame_progress = 1.0
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="." unique_id=2132517409]
+show_behind_parent = true
+position = Vector2(-3, 2)
+rotation = 1.8640116
+sprite_frames = SubResource("SpriteFrames_c6pp5")
+autoplay = "default"
+frame = 4
+frame_progress = 1.0

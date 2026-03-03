@@ -6,6 +6,8 @@ var blinkpsTimer : float = 0.0;
 var blinkTimer : float = 0.0;
 
 func _ready() -> void:
+	$Lixi.play();
+	$Lixi.pitch_scale = randf_range(0.9, 1.1);
 	var tween : Tween = create_tween();
 	tween.tween_property(self, "global_position:y", global_position.y - 8, 0.5) \
 		#.set_trans(Tween.TRANS_EXPO) \

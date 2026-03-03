@@ -1,7 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
-var bikeParticlePrefab : PackedScene = preload("res://prefabs/particles/bike_particle.tscn");
+const bikeParticlePrefab : PackedScene = preload("res://prefabs/particles/bike_particle.tscn");
+const BIKE_EXPLOSION_PREFAB : PackedScene = preload("uid://bx213sne2oo3i")
 
 enum PlayerState {
 	Normal,
@@ -64,6 +65,7 @@ var fireworkTimer : float = 0.0;
 var fireworkIgnoreInputTimer : float = 0.0;
 var fireworkDefaultDir : Vector2 = Vector2.ZERO;
 var fireworkType : FireworkType = FireworkType.Normal;
+var explodeRemainPlayed : bool = false;
 
 var currentBike : Bike;
 
@@ -72,6 +74,16 @@ var state : PlayerState = PlayerState.Normal;
 @onready var bikeParticle: CPUParticles2D = $SpriteScaler/Sprite2D/BikeParticle
 @onready var sprite : Sprite2D = $SpriteScaler/Sprite2D;
 @onready var spriteScaler : Node2D = $SpriteScaler;
+@onready var accelParticle: CPUParticles2D = $SpriteScaler/Sprite2D/AccelParticle
+
+# Audio
+@onready var explodeRemain: AudioStreamPlayer = $Sounds/ExplodeRemain
+@onready var explode: AudioStreamPlayer = $Sounds/Explode
+@onready var jump: AudioStreamPlayer = $Sounds/Jump
+@onready var firework: AudioStreamPlayer = $Sounds/Firework
+@onready var die: AudioStreamPlayer = $Sounds/Die
+@onready var use: AudioStreamPlayer = $Sounds/Use
+@onready var bike: AudioStreamPlayer = $Sounds/Bike
 
 func _ready() -> void:
 	Global.currentPlayer = self;
@@ -119,7 +131,9 @@ func _physics_process(delta: float) -> void:
 			elif coyote_timer > 0:
 				coyote_timer -= delta
 			prevOnFloor = onFloor;
+			animation_code(inputAxis);
 		PlayerState.Firework:
+			firework.volume_db = 0.0;
 			if fireworkIgnoreInputTimer > 0:
 				fireworkIgnoreInputTimer -= delta;
 				velocity += fireworkDefaultDir.normalized() * FIREWORK_SPEED * delta;
@@ -137,6 +151,9 @@ func _physics_process(delta: float) -> void:
 				velocity = velocity.bounce(collision.get_normal());
 			#move_and_slide();
 			
+			if (fireworkTimer - explodeRemain.stream.get_length() + 0.5 <= 0.0 && !explodeRemainPlayed):
+				explodeRemain.play();
+				explodeRemainPlayed = true;
 			if fireworkTimer <= 0:
 				exit_firework();
 			fireworkTimer -= delta;
@@ -162,9 +179,12 @@ func _physics_process(delta: float) -> void:
 					move_toward(velocity.x, BIKE_SPEED * dir, BIKE_ACCELERATION * delta);
 			move_and_slide();
 			if is_on_wall():
+				explode.play();
 				change_state(PlayerState.Accel);
-
+			animation_code(sign(velocity.x));
 		PlayerState.Accel:
+			accelParticle.emitting = true;
+			accelParticle.rotation = -velocity.angle();
 			onFloor = is_on_floor();
 			if not onFloor:
 				velocity.y = min(velocity.y + accelGravity * delta, MAX_FALL_SPEED)
@@ -178,8 +198,7 @@ func _physics_process(delta: float) -> void:
 			accelTime -= delta;
 			if accelTime <= 0.0:
 				change_state(PlayerState.Normal);
-			print(velocity);
-	animation_code(inputAxis);
+			animation_code(inputAxis);
 
 func change_state(nextState : PlayerState) -> void:
 	if state == nextState:
@@ -189,7 +208,10 @@ func change_state(nextState : PlayerState) -> void:
 	match state:
 		PlayerState.Normal:
 			velocity = Vector2.ZERO;
+		PlayerState.Accel:
+			accelParticle.emitting = false;
 		PlayerState.Firework:
+			firework.playing = false;
 			if currentFirework:
 				currentFirework.detach(global_position);
 				# Should be going to accel
@@ -200,17 +222,25 @@ func change_state(nextState : PlayerState) -> void:
 					accelGravity = FIREWORK_EXPLODE_GRAVITY;
 					accelTo = SPEED;
 					accelSpeed = FIREWORK_EXPLODE_DECELERATION;
+			explode.play();
 			Global.currentCamera.shake(2, 0.2);
 			Global.stop_time(0.1);
 			spriteScaler.global_rotation = 0;
 			fireworkParticle.emitting = false;
 			currentFirework = null;
 		PlayerState.Bike:
+			use.play();
+			bike.playing = false;
 			currentBike.detach();
-			var obj : CharacterBody2D = bikeParticlePrefab.instantiate();
-			obj.global_position = global_position;
-			obj.velocity = velocity;
-			GameViewport.get_current_scene().add_child(obj);
+			if !is_on_wall():
+				var obj : CharacterBody2D = bikeParticlePrefab.instantiate();
+				obj.global_position = global_position;
+				obj.velocity = velocity;
+				GameViewport.get_current_scene().add_child(obj);
+			else:
+				var obj : Node2D = BIKE_EXPLOSION_PREFAB.instantiate();
+				obj.global_position = global_position;
+				GameViewport.get_current_scene().add_child(obj);
 			velocity = Vector2(SPEED, JUMP_VELOCITY);
 			move_and_collide(Vector2.UP * 8.0);
 			bikeParticle.emitting = false;
@@ -226,7 +256,13 @@ func change_state(nextState : PlayerState) -> void:
 			accelSpeed = BIKE_LEAVE_DECELERATION;
 	state = nextState;
 	match state:
+		PlayerState.Accel:
+			accelParticle.rotation = velocity.angle();
+		PlayerState.Die:
+			die.play();
 		PlayerState.Firework:
+			use.play();
+			Global.stop_time(0.1);
 			match currentFirework.type:
 				Firework.Type.Normal:
 					fireworkType = FireworkType.Normal;
@@ -237,12 +273,18 @@ func change_state(nextState : PlayerState) -> void:
 			aimDir = fireworkDefaultDir;
 			fireworkIgnoreInputTimer = FIREWORK_IGNORE_INPUT_TIME;
 			fireworkParticle.emitting = true;
-			Global.stop_time(0.1);
+			get_tree().create_timer(0.1).timeout.connect((func() -> void:
+				firework.playing = true;
+			));
 		PlayerState.Bike:
+			use.play();
 			Global.stop_time(0.1);
 			if !is_on_floor():
 				move_and_collide(Vector2.DOWN * 8.0);
 			bikeParticle.emitting = true;
+			get_tree().create_timer(0.1).timeout.connect((func() -> void:
+				bike.playing = true;
+			));
 
 func handle_jump(delta : float) -> void:
 	if onFloor:
@@ -253,6 +295,7 @@ func handle_jump(delta : float) -> void:
 			velocity.y += JUMP_VELOCITY
 			jump_buffer_timer = 0
 			coyote_timer = 0
+			jump.play();
 		jump_buffer_timer -= delta
 	
 	if Input.is_action_just_released("jump") and velocity.y < 0:
@@ -279,3 +322,8 @@ func enter_bike(bike : Bike) -> void:
 	currentBike = bike;
 	change_state(Player.PlayerState.Bike);
 	pass;
+
+@onready var walk: AudioStreamPlayer = $Sounds/Walk
+func play_walking() -> void:
+	walk.play();
+	

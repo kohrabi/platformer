@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://x3yoy4ajnlx" path="res://prefabs/entities/bike.tscn" id="4_6gg16"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_c8amq"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="6_rx76q"]
-[ext_resource type="PackedScene" uid="uid://be0uwyr04deul" path="res://scenes/level12.tscn" id="7_u2xta"]
+[ext_resource type="PackedScene" uid="uid://duvkmtmwyn44g" path="res://scenes/level11.tscn" id="7_u2xta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
 size = Vector2(8, 32)

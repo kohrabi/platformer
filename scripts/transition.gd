@@ -11,6 +11,8 @@ func change_scene_to_packed(scene : PackedScene) -> void:
 		return;
 	transition_in();
 	transitioning = true;
+	$LevelFinished.play();
+	$LevelFinished.pitch_scale = randf_range(0.95, 1.1);
 	await get_tree().create_timer(0.5).timeout;
 	GameViewport.change_scene_to_packed(scene);
 	transitioning = false;
