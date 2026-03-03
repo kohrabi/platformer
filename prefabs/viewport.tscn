@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://7a2dm370kqh2"]
+
+[ext_resource type="Script" uid="uid://dkl0axsiv7agb" path="res://scripts/viewport.gd" id="1_cksl7"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="2_acmyw"]
+[ext_resource type="Script" uid="uid://buab5rs3r1d1l" path="res://scripts/mobile_controls.gd" id="2_n258o"]
+[ext_resource type="Texture2D" uid="uid://b61n1jj660dvp" path="res://sprites/mobile_controls/button_circle.png" id="2_uve4g"]
+[ext_resource type="Texture2D" uid="uid://b028g4luyf4q5" path="res://sprites/mobile_controls/reset.png" id="5_lu5ac"]
+[ext_resource type="Texture2D" uid="uid://bghtgc3dnnvd" path="res://sprites/mobile_controls/jump.png" id="7_hruat"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cksl7"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="GDScript" id="GDScript_37h34"]
+resource_name = "jump"
+script/source = "extends TextureButton
+
+func _on_mouse_entered() -> void:
+	modulate.a = 0.9;
+	pass # Replace with function body.
+
+
+func _on_mouse_exited() -> void:
+	modulate.a = 1.0;
+	pass # Replace with function body.
+
+
+func _on_button_down() -> void:
+	Input.action_press(\"jump\")
+	pass # Replace with function body.
+
+
+func _on_button_up() -> void:
+	Input.action_release(\"jump\")
+	pass # Replace with function body.
+"
+
+[sub_resource type="GDScript" id="GDScript_lu5ac"]
+resource_name = "reset"
+script/source = "extends TextureButton
+
+
+func _on_pressed() -> void:
+	Input.action_press(\"reset\");
+	Input.action_release(\"reset\");
+	pass # Replace with function body.
+"
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=760240396]
+layer = 99
+script = ExtResource("1_cksl7")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1440197807]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_cksl7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=25372220]
+disable_3d = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(128, 128)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=28387599]
+layer = 9999
+
+[node name="Controls" type="Control" parent="CanvasLayer" unique_id=1474474368]
+z_index = 5
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_n258o")
+
+[node name="Firework" type="Control" parent="CanvasLayer/Controls" unique_id=1903840639]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureButton" type="TextureButton" parent="CanvasLayer/Controls/Firework" unique_id=6739036]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 232.0
+offset_right = 576.0
+offset_bottom = 296.0
+action_mode = 0
+texture_normal = ExtResource("2_uve4g")
+stretch_mode = 5
+script = SubResource("GDScript_37h34")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Controls/Firework/TextureButton" unique_id=1760964183]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Controls/Firework/TextureButton/MarginContainer" unique_id=879078303]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_hruat")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Restart" type="TextureButton" parent="CanvasLayer/Controls/Firework" unique_id=912532464]
+layout_mode = 0
+offset_left = 576.00006
+offset_top = 16.000006
+offset_right = 640.00006
+offset_bottom = 80.00001
+scale = Vector2(0.8, 0.8)
+action_mode = 0
+texture_normal = ExtResource("2_uve4g")
+stretch_mode = 5
+script = SubResource("GDScript_lu5ac")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Controls/Firework/Restart" unique_id=135029226]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Controls/Firework/Restart/MarginContainer" unique_id=672994783]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_lu5ac")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Virtual Joystick" parent="CanvasLayer/Controls/Firework" unique_id=962828277 instance=ExtResource("2_acmyw")]
+layout_mode = 1
+offset_left = 32.0
+offset_top = -168.0
+offset_right = 332.0
+offset_bottom = 132.0
+scale = Vector2(0.5, 0.5)
+action_left = "move_left"
+action_right = "move_right"
+action_up = "move_up"
+action_down = "move_down"
+
+[connection signal="button_down" from="CanvasLayer/Controls/Firework/TextureButton" to="CanvasLayer/Controls/Firework/TextureButton" method="_on_button_down"]
+[connection signal="button_up" from="CanvasLayer/Controls/Firework/TextureButton" to="CanvasLayer/Controls/Firework/TextureButton" method="_on_button_up"]
+[connection signal="mouse_entered" from="CanvasLayer/Controls/Firework/TextureButton" to="CanvasLayer/Controls/Firework/TextureButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Controls/Firework/TextureButton" to="CanvasLayer/Controls/Firework/TextureButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Controls/Firework/TextureButton" to="CanvasLayer/Controls/Firework/TextureButton" method="_on_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Controls/Firework/Restart" to="CanvasLayer/Controls/Firework/Restart" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Controls/Firework/Restart" to="CanvasLayer/Controls/Firework/Restart" method="_on_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Controls/Firework/Restart" to="CanvasLayer/Controls/Firework/Restart" method="_on_pressed"]

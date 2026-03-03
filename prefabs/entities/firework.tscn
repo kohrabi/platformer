@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cmfpmwl1aakqf"]
 
 [ext_resource type="Script" uid="uid://bcfq2o33km34e" path="res://scripts/firework.gd" id="1_07a3f"]
-[ext_resource type="Texture2D" uid="uid://bfyng70sk4dcl" path="res://sprites/platformer.png" id="1_kwrub"]
 [ext_resource type="PackedScene" uid="uid://c8fh6sfsdcj8a" path="res://prefabs/particles/firework.tscn" id="2_kjus7"]
 [ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="2_qko0y"]
+[ext_resource type="Texture2D" uid="uid://b6cqekjyxwqf" path="res://sprites/powerup.png" id="4_kjus7"]
 
 [sub_resource type="Curve" id="Curve_efe5l"]
 _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
@@ -44,9 +44,7 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_wwpf4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1954554996]
-texture = ExtResource("1_kwrub")
-hframes = 16
-vframes = 8
-frame = 2
+texture = ExtResource("4_kjus7")
+hframes = 3
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

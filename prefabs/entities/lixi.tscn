@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://e5ecbh3vg63c"]
 
 [ext_resource type="Script" uid="uid://bq7o4qxsmym52" path="res://scripts/lixi.gd" id="1_kwqmy"]
-[ext_resource type="Texture2D" uid="uid://bfyng70sk4dcl" path="res://sprites/platformer.png" id="2_0e4ol"]
+[ext_resource type="Texture2D" uid="uid://csj0hk62etbr1" path="res://sprites/lixi.png" id="2_k7me3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vcjkt"]
 size = Vector2(8, 8)
@@ -18,9 +18,6 @@ DISTANCE = 3.0
 shape = SubResource("RectangleShape2D_vcjkt")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=848297048]
-texture = ExtResource("2_0e4ol")
-hframes = 16
-vframes = 8
-frame = 4
+texture = ExtResource("2_k7me3")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

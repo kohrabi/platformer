@@ -2,6 +2,7 @@ extends Node
 
 var currentCamera : Camera;
 var currentPlayer : Player;
+var currentViewport : GameViewport;
 
 func stop_time(time : float) -> void:
 	Engine.time_scale = 0.01;

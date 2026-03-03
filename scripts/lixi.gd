@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	var obj : Label = scoreParticlePrefab.instantiate();
 	obj.global_position = global_position - Vector2(obj.size.x / 2.0, 0.0);
-	get_tree().root.add_child(obj);
+	GameViewport.get_current_scene().add_child(obj);
 	Global.stop_time(0.1);
 	queue_free();
 	pass # Replace with function body.

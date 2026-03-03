@@ -4,7 +4,6 @@ class_name Player
 enum PlayerState {
 	Normal,
 	Firework,
-	FireworkExplode,
 	Die,
 	Bike,
 	Accel
@@ -77,10 +76,10 @@ func _ready() -> void:
 	prevOnFloor = is_on_floor();
 
 func _process(_delta: float) -> void:
-	inputAxis = Input.get_axis("move_left", "move_right");
+	inputAxis = sign(Input.get_axis("move_left", "move_right"));
 	var dir : Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down");
 	if (dir != Vector2.ZERO):
-		aimDir = dir;
+		aimDir = dir.normalized();
 		
 	if Input.is_action_just_pressed("reset"):
 		Transition.reload_current_scene.call_deferred();

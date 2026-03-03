@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Transition="*uid://uv7xmknylign"
 Global="*uid://cqbpcoiktsxge"
+GameViewport="*uid://7a2dm370kqh2"
 
 [debug]
 
@@ -27,15 +28,18 @@ gdscript/warnings/untyped_declaration=1
 
 [display]
 
-window/size/viewport_width=128
-window/size/viewport_height=128
-window/stretch/mode="viewport"
-window/stretch/scale_mode="integer"
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/stretch/mode="canvas_items"
 
 [editor]
 
 movie_writer/movie_file="E:/GameDev/Projects/Godot/platformer/recordings/recording.avi"
 movie_writer/fps=30
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")
 
 [file_customization]
 
@@ -91,6 +95,10 @@ reset={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":82,"key_label":0,"unicode":114,"location":0,"echo":false,"script":null)
 ]
 }
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 

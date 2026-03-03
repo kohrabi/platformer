@@ -18,7 +18,8 @@ func _on_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
 
 func attach(player : Player) -> void:
-	if (player.state != Player.PlayerState.Normal):
+	if (player.state != Player.PlayerState.Normal &&
+		player.state != Player.PlayerState.Accel):
 		return;
 	attached = true;
 	visible = false;
@@ -26,7 +27,7 @@ func attach(player : Player) -> void:
 
 func detach(playerPos : Vector2) -> void:
 	var obj : Node2D = particlePrefab.instantiate();
-	get_tree().root.add_child(obj);
+	GameViewport.get_current_scene().add_child(obj);
 	obj.global_position = playerPos;
 	await get_tree().create_timer(0.5).timeout;
 	visible = true;

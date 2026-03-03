@@ -12,7 +12,7 @@ func change_scene_to_packed(scene : PackedScene) -> void:
 	transition_in();
 	transitioning = true;
 	await get_tree().create_timer(0.5).timeout;
-	get_tree().change_scene_to_packed(scene);
+	GameViewport.change_scene_to_packed(scene);
 	transitioning = false;
 	transition_out();
 
@@ -22,7 +22,8 @@ func reload_current_scene() -> void:
 	transition_in();
 	transitioning = true;
 	await get_tree().create_timer(0.5).timeout;
-	get_tree().reload_current_scene();
+	GameViewport.remove_children();
+	GameViewport.reload_current_scene();
 	await get_tree().create_timer(0.1).timeout;
 	transition_out();
 	transitioning = false;

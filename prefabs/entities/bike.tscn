@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://x3yoy4ajnlx"]
 
 [ext_resource type="Script" uid="uid://cf0o5oq0ru050" path="res://scripts/bike.gd" id="1_423am"]
-[ext_resource type="Texture2D" uid="uid://bfyng70sk4dcl" path="res://sprites/platformer.png" id="4_boyae"]
+[ext_resource type="Texture2D" uid="uid://b6cqekjyxwqf" path="res://sprites/powerup.png" id="2_423am"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
 size = Vector2(8, 8)
@@ -16,9 +16,8 @@ script = ExtResource("1_423am")
 shape = SubResource("RectangleShape2D_wwpf4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1954554996]
-texture = ExtResource("4_boyae")
-hframes = 16
-vframes = 8
-frame = 26
+texture = ExtResource("2_423am")
+hframes = 3
+frame = 2
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
