@@ -603,15 +603,14 @@ BIKE_LEAVE_GRAVITY = 200.0
 BIKE_LEAVE_DECELERATION = 100.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=395993521]
-position = Vector2(0, 1)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_g2h75")
 
 [node name="SpriteScaler" type="Node2D" parent="." unique_id=1338256241]
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteScaler" unique_id=1978635507]
-position = Vector2(0, -4)
-texture = ExtResource("2_grlhh")
-hframes = 2
+texture = ExtResource("2_4dohe")
+hframes = 5
 
 [node name="FireworkParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1683100698]
 position = Vector2(0, 5)

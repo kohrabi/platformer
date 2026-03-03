@@ -2,7 +2,6 @@ extends CanvasLayer
 
 const DISABLE = false;
 @onready var sub_viewport: SubViewport = $SubViewport
-var currentScene : Node;
 var currentScenePath: String
 
 func _ready() -> void:

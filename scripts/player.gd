@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
+var bikeParticlePrefab : PackedScene = preload("res://prefabs/particles/bike_particle.tscn");
+
 enum PlayerState {
 	Normal,
 	Firework,
@@ -144,6 +146,12 @@ func _physics_process(delta: float) -> void:
 			if not onFloor:
 				velocity.y = min(velocity.y + FIREWORK_EXPLODE_GRAVITY * delta, MAX_FALL_SPEED)
 			var collision : KinematicCollision2D = move_and_collide(velocity * delta, true);
+			if velocity.x > 0:
+				bikeParticle.position.x = abs(bikeParticle.position.x) * -1;
+				bikeParticle.direction.x = abs(bikeParticle.direction.x) * -1;
+			elif velocity.x < 0:
+				bikeParticle.position.x = abs(bikeParticle.position.x) * 1;
+				bikeParticle.direction.x = abs(bikeParticle.direction.x) * 1;
 			if collision:
 				var dirVec : Vector2 = Vector2(dir, 0);
 				dirVec = dirVec.slide(collision.get_normal()) * 1.4;
@@ -199,6 +207,10 @@ func change_state(nextState : PlayerState) -> void:
 			currentFirework = null;
 		PlayerState.Bike:
 			currentBike.detach();
+			var obj : CharacterBody2D = bikeParticlePrefab.instantiate();
+			obj.global_position = global_position;
+			obj.velocity = velocity;
+			GameViewport.get_current_scene().add_child(obj);
 			velocity = Vector2(SPEED, JUMP_VELOCITY);
 			move_and_collide(Vector2.UP * 8.0);
 			bikeParticle.emitting = false;

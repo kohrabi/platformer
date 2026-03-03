@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bam6cdyul0336"]
+
+[ext_resource type="Script" uid="uid://3j2d140e8pui" path="res://scripts/bike_particle.gd" id="1_4b2qo"]
+[ext_resource type="Texture2D" uid="uid://b6cqekjyxwqf" path="res://sprites/powerup.png" id="2_weobr"]
+[ext_resource type="Texture2D" uid="uid://djlf8yrft2te5" path="res://sprites/circleDark.png" id="3_yly81"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpf4"]
+size = Vector2(8, 8)
+
+[sub_resource type="Curve" id="Curve_vpypv"]
+_data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
+point_count = 2
+
+[node name="Bike" type="CharacterBody2D" unique_id=1778248818]
+collision_layer = 16
+script = ExtResource("1_4b2qo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2109018983]
+shape = SubResource("RectangleShape2D_wwpf4")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1954554996]
+texture = ExtResource("2_weobr")
+hframes = 3
+frame = 2
+
+[node name="BikeParticle" type="CPUParticles2D" parent="Sprite2D" unique_id=1601815191]
+show_behind_parent = true
+position = Vector2(-3, 2)
+amount = 20
+texture = ExtResource("3_yly81")
+lifetime = 0.3
+emission_shape = 1
+emission_sphere_radius = 3.0
+direction = Vector2(-1, 0)
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.5
+linear_accel_min = -10.0
+linear_accel_max = 10.0
+scale_amount_curve = SubResource("Curve_vpypv")
