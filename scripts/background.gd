@@ -1,14 +1,14 @@
 extends TileMapLayer
 
-var smallFireworkPrefab = preload("res://prefabs/particles/small_firework.tscn")
+const smallFireworkPrefab : PackedScene = preload("res://prefabs/particles/small_firework.tscn")
 
-const X_SPAWN_RANGE = 256;
-const X_SPAWN_PAD = 8;
-const Y_SPAWN_POS = 92;
-const Y_POS_RAND = 7.0;
-const SPAWN_TIME = 1.0;
-const SPAWN_SPACE = 0.5;
-const SPAWN_NUM = 3;
+@export var X_SPAWN_RANGE : float = 256;
+@export var X_SPAWN_PAD : float = 8;
+@export var Y_SPAWN_POS : float = 92;
+@export var Y_POS_RAND : float = 7.0;
+@export var SPAWN_TIME : float = 1.0;
+@export var SPAWN_SPACE : float = 0.5;
+@export var SPAWN_NUM : int = 3;
 
 var spawnTimer : float = 0.0;
 var spawnNumber : int = 0;

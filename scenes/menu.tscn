@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://ccvreq57rjjwq"]
+
+[ext_resource type="PackedScene" uid="uid://grcwcm1objt7" path="res://prefabs/background_menu.tscn" id="2_con2f"]
+[ext_resource type="Texture2D" uid="uid://411hyaipiv43" path="res://sprites/mainmenu.png" id="4_mhnvy"]
+[ext_resource type="FontFile" uid="uid://dgs2lcn7abwkf" path="res://fonts/pico-8.ttf" id="5_4ytvr"]
+[ext_resource type="AudioStream" uid="uid://b37ygx7a4xiwf" path="res://audio/lixi.wav" id="5_g3eks"]
+[ext_resource type="PackedScene" uid="uid://bbftcqeaohb0u" path="res://scenes/level0.tscn" id="5_v86rl"]
+[ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="8_7jp70"]
+
+[sub_resource type="GDScript" id="GDScript_mhnvy"]
+script/source = "extends Label
+var played : bool = false;
+
+@export var firstLevel : PackedScene;
+
+var blinkTimer : float = 0.0;
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed(\"jump\"):
+		_start_play();
+	if played:
+		blinkTimer += delta;
+		if blinkTimer > 0.2:
+			blinkTimer = 0.0;
+			visible = !visible;
+
+func _start_play() -> void:
+	if played: return;
+	played = true;
+	$Lixi.play();
+	await get_tree().create_timer(2).timeout;
+	Transition.change_scene_to_packed(firstLevel);
+	pass;
+"
+
+[node name="Level" type="Node2D" unique_id=554187013]
+
+[node name="Background" parent="." unique_id=2043812731 instance=ExtResource("2_con2f")]
+X_SPAWN_RANGE = 128.0
+
+[node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("8_7jp70")]
+
+[node name="Control" type="Control" parent="." unique_id=1479081369]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1537398850]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_mhnvy")
+
+[node name="Label" type="Label" parent="Control" unique_id=1911424414]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 72.0
+offset_bottom = 63.0
+theme_override_fonts/font = ExtResource("5_4ytvr")
+theme_override_font_sizes/font_size = 15
+text = "lunar
+trip"
+
+[node name="Label2" type="Label" parent="Control" unique_id=330727839]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 75.0
+offset_right = 75.0
+offset_bottom = 82.0
+theme_override_fonts/font = ExtResource("5_4ytvr")
+theme_override_font_sizes/font_size = 5
+text = "JUMP TO START"
+script = SubResource("GDScript_mhnvy")
+firstLevel = ExtResource("5_v86rl")
+
+[node name="Lixi" type="AudioStreamPlayer" parent="Control/Label2" unique_id=1347140505]
+stream = ExtResource("5_g3eks")
