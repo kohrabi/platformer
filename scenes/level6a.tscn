@@ -40,12 +40,12 @@ position = Vector2(184, 64)
 shape = SubResource("RectangleShape2D_xre12")
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("7_50r1q")]
-nextScene = "uid://cog2smu7xm8wm"
+nextScene = "uid://gdsfebqx5ru6"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(364, 16)
 shape = SubResource("RectangleShape2D_dwgg1")
 
 [connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]
-[connection signal="body_entered" from="Entities/@Area2D@229058" to="Entities/@Area2D@229058" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/@Area2D@169104" to="Entities/@Area2D@169104" method="_on_body_entered"]
 [connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]
