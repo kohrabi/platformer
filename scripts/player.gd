@@ -35,6 +35,7 @@ enum FireworkType {
 @export var FIREWORK_EXPLODE_TIME : float = 0.2;
 @export var FIREWORK_EXPLODE_DECELERATION : float = 100;
 @export var FIREWORK_EXPLODE_GRAVITY : float = 100;
+@export var FIREWORK_SECOND_PER_FLASH : float = 0.1;
 @export_subgroup("Bike")
 @export var BIKE_SPEED : float = 100.0;
 @export var BIKE_ACCELERATION : float = 100.0;
@@ -66,6 +67,8 @@ var fireworkIgnoreInputTimer : float = 0.0;
 var fireworkDefaultDir : Vector2 = Vector2.ZERO;
 var fireworkType : FireworkType = FireworkType.Normal;
 var explodeRemainPlayed : bool = false;
+var fireworkFlashTimer : float = 0.0;
+var fireworkFlashWhite : bool = false;
 
 var currentBike : Bike;
 
@@ -88,6 +91,7 @@ var state : PlayerState = PlayerState.Normal;
 func _ready() -> void:
 	Global.currentPlayer = self;
 	prevOnFloor = is_on_floor();
+	sprite.material.set("shader_parameter/progress", 0.0);
 
 func _process(_delta: float) -> void:
 	inputAxis = sign(Input.get_axis("move_left", "move_right"));
@@ -151,9 +155,19 @@ func _physics_process(delta: float) -> void:
 				velocity = velocity.bounce(collision.get_normal());
 			#move_and_slide();
 			
-			if (fireworkTimer - explodeRemain.stream.get_length() + 0.5 <= 0.0 && !explodeRemainPlayed):
-				explodeRemain.play();
-				explodeRemainPlayed = true;
+			if (fireworkTimer - 1.5 + 0.5 <= 0.0):
+				if !explodeRemainPlayed:
+					explodeRemain.play();
+					explodeRemainPlayed = true;
+				fireworkFlashTimer += delta;
+				if fireworkFlashTimer >= FIREWORK_SECOND_PER_FLASH:
+					fireworkFlashTimer = 0.0;
+					fireworkFlashWhite = !fireworkFlashWhite;
+					if fireworkFlashWhite:
+						sprite.material.set("shader_parameter/progress", 1.0);
+					else:
+						sprite.material.set("shader_parameter/progress", 0.0);
+					pass;
 			if fireworkTimer <= 0:
 				exit_firework();
 			fireworkTimer -= delta;
@@ -211,7 +225,14 @@ func change_state(nextState : PlayerState) -> void:
 		PlayerState.Accel:
 			accelParticle.emitting = false;
 		PlayerState.Firework:
+			sprite.material.set("shader_parameter/progress", 0.0);
+			fireworkFlashTimer = 0.0;
+			fireworkFlashWhite = false;
+			
 			firework.playing = false;
+			fireworkParticle.emitting = false;
+			spriteScaler.global_rotation = 0;
+			
 			if currentFirework:
 				currentFirework.detach(global_position);
 				# Should be going to accel
@@ -222,11 +243,10 @@ func change_state(nextState : PlayerState) -> void:
 					accelGravity = FIREWORK_EXPLODE_GRAVITY;
 					accelTo = SPEED;
 					accelSpeed = FIREWORK_EXPLODE_DECELERATION;
+			
 			explode.play();
 			Global.currentCamera.shake(2, 0.2);
 			Global.stop_time(0.1);
-			spriteScaler.global_rotation = 0;
-			fireworkParticle.emitting = false;
 			currentFirework = null;
 		PlayerState.Bike:
 			use.play();
@@ -262,6 +282,7 @@ func change_state(nextState : PlayerState) -> void:
 			die.play();
 		PlayerState.Firework:
 			use.play();
+			explodeRemainPlayed = false;
 			Global.stop_time(0.1);
 			match currentFirework.type:
 				Firework.Type.Normal:

@@ -27,7 +27,7 @@ rendering_quadrant_size = 8
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_kjktk")]
 position = Vector2(197.98407, 13.545109)
-nextScene = "uid://c0m71f8lyjea2"
+nextScene = "uid://4fkqjnjl80i6"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(-73.98407, 2.4548912)

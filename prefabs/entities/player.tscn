@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cmox10psxitme" path="res://scripts/player.gd" id="1_4dohe"]
 [ext_resource type="Texture2D" uid="uid://dh1yanm3xa2jf" path="res://sprites/platformer_player.png" id="2_4dohe"]
 [ext_resource type="Texture2D" uid="uid://bqmhp27lq1kds" path="res://sprites/platformer_playerbike.png" id="2_grlhh"]
+[ext_resource type="Shader" uid="uid://cinxyqvpgdqmk" path="res://resources/flash.gdshader" id="2_mpf6q"]
 [ext_resource type="Texture2D" uid="uid://cbfscrbr4bms2" path="res://sprites/circle.png" id="3_r66lb"]
 [ext_resource type="Texture2D" uid="uid://djlf8yrft2te5" path="res://sprites/circleDark.png" id="4_j0cl5"]
 [ext_resource type="AudioStream" uid="uid://0kgnr8p2lm6x" path="res://audio/explode.wav" id="6_2tsmg"]
@@ -16,6 +17,11 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2h75"]
 size = Vector2(4, 4)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7fnqb"]
+shader = ExtResource("2_mpf6q")
+shader_parameter/flashColor = Color(1, 1, 1, 1)
+shader_parameter/progress = 0.0
 
 [sub_resource type="Curve" id="Curve_1txc5"]
 _data = [Vector2(0, 0.75952125), 0.0, 0.0, 0, 0, Vector2(1, 0.2856366), -1.5914016, 0.0, 0, 0]
@@ -666,10 +672,12 @@ shape = SubResource("RectangleShape2D_g2h75")
 [node name="SpriteScaler" type="Node2D" parent="." unique_id=1338256241]
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteScaler" unique_id=1978635507]
+material = SubResource("ShaderMaterial_7fnqb")
 texture = ExtResource("2_4dohe")
 hframes = 5
 
 [node name="FireworkParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1683100698]
+show_behind_parent = true
 position = Vector2(0, 5)
 emitting = false
 amount = 40
@@ -689,7 +697,8 @@ linear_accel_max = 10.0
 scale_amount_curve = SubResource("Curve_1txc5")
 
 [node name="AccelParticle" type="CPUParticles2D" parent="SpriteScaler/Sprite2D" unique_id=1623065010]
-position = Vector2(0, 5)
+show_behind_parent = true
+position = Vector2(0, 2)
 emitting = false
 amount = 20
 texture = ExtResource("3_r66lb")
@@ -749,6 +758,7 @@ bus = &"SFX"
 
 [node name="ExplodeRemain" type="AudioStreamPlayer" parent="Sounds" unique_id=926626003]
 stream = SubResource("AudioStreamRandomizer_4gyf0")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="Jump" type="AudioStreamPlayer" parent="Sounds" unique_id=987440916]

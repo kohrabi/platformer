@@ -71,5 +71,5 @@ nextScene = "uid://d2otcjgd4x13w"
 position = Vector2(-78.78378, 243.48422)
 shape = SubResource("RectangleShape2D_dwgg1")
 
-[connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]
-[connection signal="body_entered" from="Entities/FireworkExplode" to="Entities/FireworkExplode" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/@Area2D@24490" to="Entities/@Area2D@24490" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/@Area2D@24491" to="Entities/@Area2D@24491" method="_on_body_entered"]

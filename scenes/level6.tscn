@@ -75,11 +75,8 @@ position = Vector2(70, 138)
 [node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("7_jaibq")]
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("7_3qbet")]
-nextScene = "uid://cog2smu7xm8wm"
+nextScene = "uid://5yai01jl7hrn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(124, 112)
 shape = SubResource("RectangleShape2D_dwgg1")
-
-[connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]
-[connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]
