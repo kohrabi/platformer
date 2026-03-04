@@ -5,7 +5,6 @@
 [ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_pcq77"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_kjktk"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_wc41x"]
-[ext_resource type="PackedScene" uid="uid://c0m71f8lyjea2" path="res://scenes/level9.tscn" id="6_u2xta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
 size = Vector2(8, 32)
@@ -28,7 +27,7 @@ rendering_quadrant_size = 8
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_kjktk")]
 position = Vector2(197.98407, 13.545109)
-nextScene = ExtResource("6_u2xta")
+nextScene = "uid://c0m71f8lyjea2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(-73.98407, 2.4548912)

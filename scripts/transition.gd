@@ -18,6 +18,19 @@ func change_scene_to_packed(scene : PackedScene) -> void:
 	transitioning = false;
 	transition_out();
 
+
+func change_scene_to_file(file : String) -> void:
+	if transitioning:
+		return;
+	transition_in();
+	transitioning = true;
+	$LevelFinished.play();
+	$LevelFinished.pitch_scale = randf_range(0.95, 1.1);
+	await get_tree().create_timer(0.5).timeout;
+	GameViewport.change_scene_to_file(file);
+	transitioning = false;
+	transition_out();
+
 func reload_current_scene() -> void:
 	if transitioning:
 		return;

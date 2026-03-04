@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="6_utlmm"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="7_3qbet"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="7_jaibq"]
-[ext_resource type="PackedScene" uid="uid://cog2smu7xm8wm" path="res://scenes/level7.tscn" id="8_3qbet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_utlmm"]
 size = Vector2(76, 40)
@@ -76,7 +75,7 @@ position = Vector2(70, 138)
 [node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("7_jaibq")]
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("7_3qbet")]
-nextScene = ExtResource("8_3qbet")
+nextScene = "uid://cog2smu7xm8wm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(124, 112)

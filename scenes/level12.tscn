@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://x3yoy4ajnlx" path="res://prefabs/entities/bike.tscn" id="4_fsto1"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_ssefi"]
 [ext_resource type="PackedScene" uid="uid://cygyq1yap0jkg" path="res://prefabs/entities/dog.tscn" id="5_y15wb"]
-[ext_resource type="PackedScene" uid="uid://0ossrga7dhan" path="res://prefabs/exit.tscn" id="7_8tbsi"]
+[ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="8_8tbsi"]
 [ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="8_y15wb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4hax3"]
@@ -59,14 +59,15 @@ top_level = true
 position = Vector2(136, -44)
 shape = SubResource("RectangleShape2D_k6tck")
 
-[node name="Exit" parent="." unique_id=1663383131 instance=ExtResource("7_8tbsi")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1061293346]
-position = Vector2(268, -184)
-shape = SubResource("RectangleShape2D_dwgg1")
-
 [node name="Reset" parent="." unique_id=1883135819 instance=ExtResource("8_y15wb")]
 position = Vector2(68, 148)
 
-[connection signal="body_entered" from="Entities/@Area2D@94589" to="Entities/@Area2D@94589" method="_on_body_entered"]
-[connection signal="body_entered" from="Entities/@Area2D@94590" to="Entities/@Area2D@94590" method="_on_body_entered"]
+[node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("8_8tbsi")]
+nextScene = "uid://dtoa854y6gogv"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
+position = Vector2(268, -184)
+shape = SubResource("RectangleShape2D_dwgg1")
+
+[connection signal="body_entered" from="Entities/FireworkExplode" to="Entities/FireworkExplode" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]

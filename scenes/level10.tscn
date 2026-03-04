@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://x3yoy4ajnlx" path="res://prefabs/entities/bike.tscn" id="4_6gg16"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="5_c8amq"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="6_rx76q"]
-[ext_resource type="PackedScene" uid="uid://duvkmtmwyn44g" path="res://scenes/level11.tscn" id="7_u2xta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
 size = Vector2(8, 32)
@@ -32,7 +31,7 @@ position = Vector2(20, 76)
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("6_rx76q")]
 position = Vector2(197.98407, 13.545109)
-nextScene = ExtResource("7_u2xta")
+nextScene = "uid://duvkmtmwyn44g"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(-73.98407, 50.45489)

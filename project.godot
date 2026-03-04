@@ -25,6 +25,7 @@ buses/default_bus_layout="uid://bbxij0qlpsswv"
 Transition="*uid://uv7xmknylign"
 Global="*uid://cqbpcoiktsxge"
 GameViewport="*uid://7a2dm370kqh2"
+Music="*uid://bsyoda1xibrp1"
 
 [debug]
 

@@ -5,7 +5,6 @@
 [ext_resource type="TileSet" uid="uid://bp8boyoftpdg7" path="res://resources/prefabs.tres" id="3_76aq6"]
 [ext_resource type="PackedScene" uid="uid://b00lveqpp16vl" path="res://prefabs/reset.tscn" id="4_v4gm1"]
 [ext_resource type="PackedScene" uid="uid://d4lyy2ac6nejk" path="res://prefabs/change_level.tscn" id="5_fkit3"]
-[ext_resource type="PackedScene" uid="uid://cf1k6juw44l0c" path="res://scenes/level6.tscn" id="6_76aq6"]
 [ext_resource type="PackedScene" uid="uid://b4p3qu80bx5ty" path="res://prefabs/camera.tscn" id="7_76aq6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwgg1"]
@@ -29,7 +28,7 @@ rendering_quadrant_size = 8
 position = Vector2(70, 138)
 
 [node name="ChangeLevel" parent="." unique_id=1663383131 instance=ExtResource("5_fkit3")]
-nextScene = ExtResource("6_76aq6")
+nextScene = "uid://cf1k6juw44l0c"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ChangeLevel" unique_id=1061293346]
 position = Vector2(120, 4)
@@ -38,5 +37,5 @@ shape = SubResource("RectangleShape2D_dwgg1")
 
 [node name="Camera2D" parent="." unique_id=1071947445 instance=ExtResource("7_76aq6")]
 
-[connection signal="body_entered" from="Entities/@Area2D@75724" to="Entities/@Area2D@75724" method="_on_body_entered"]
-[connection signal="body_entered" from="Entities/@Area2D@75725" to="Entities/@Area2D@75725" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/Firework" to="Entities/Firework" method="_on_body_entered"]
+[connection signal="body_entered" from="Entities/Lixi" to="Entities/Lixi" method="_on_body_entered"]
